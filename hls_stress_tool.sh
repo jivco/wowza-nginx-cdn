@@ -10,7 +10,7 @@
 #####################################
 
 CHUNKDURATION=5
-URL="http://94.156.44.142:8080/dvr/smil:$1.smil"
+URL="http://localhost:8080/dvr/smil:$1.smil"
 PLAYLIST="$URL/playlist.m3u8?DVR&h=111222333"
 
 while true
