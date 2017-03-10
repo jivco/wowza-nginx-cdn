@@ -6,10 +6,10 @@
 #                                    #
 # ztodorov@neterra.net               #
 #                                    #
-# v.0.02                             #
-##################################### #
+# v.0.03                             #
+######################################
 
-URL="http://94.156.44.142:8080/dvr/smil:$1.smil"
+URL="http://localhost:8080/dvr/smil:$1.smil"
 PLAYLIST="$URL/playlist.m3u8"
 
 IFS=$'\r\n' GLOBIGNORE='*' command eval  "BITRATE_PLAYLISTS=($(curl -s $PLAYLIST |grep -v '#'))"
