@@ -52,10 +52,12 @@ function gen_chunklist {
 
     NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST))
 
-    if [ "${WOW_CHUNKLIST[-1]}" != "$NGX_CHUNK" ]; then
-      curl -s -o /dev/null $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
-      echo "#EXTINF:5.0," >>$NGX_PLAYLIST;
-      echo ${WOW_CHUNKLIST[-1]} >>$NGX_PLAYLIST;
+    if [ ! -z "${WOW_CHUNKLIST[-1]}" ]; then
+      if [ "${WOW_CHUNKLIST[-1]}" != "$NGX_CHUNK" ]; then
+        curl -s -o /dev/null $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
+        echo "#EXTINF:5.0," >>$NGX_PLAYLIST;
+        echo ${WOW_CHUNKLIST[-1]} >>$NGX_PLAYLIST;
+      fi
     fi
 
     XMS=$(head $NGX_PLAYLIST -n2|grep -v "#"|awk -F "_" '{print $4}'|awk -F "." '{print $1}')
