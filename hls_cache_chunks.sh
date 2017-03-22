@@ -12,6 +12,7 @@ WOW_APP='dvr'
 SMIL='smil'
 NGX_CHNL_DIR_NAME=$1.$SMIL
 WOW_URL="http://$2:1935/$WOW_APP/$NGX_CHNL_DIR_NAME"
+NGX_URL="http://$3:8080/$WOW_APP/$NGX_CHNL_DIR_NAME"
 WOW_PLAYLIST=$WOW_URL'/playlist.m3u8'
 BITRATE1='360p'
 RESOLUTION1='640x360'
@@ -37,7 +38,7 @@ CHUNKDURATION=5
 DVR_WINDOW=8
 MAXCHUNKS=$(($DVR_WINDOW*3600/$CHUNKDURATION))
 MAXLINES=$((2*$MAXCHUNKS))
-USAGE_HELP='Usage: hls_cache_chunks.sh bnt1 127.0.0.1'
+USAGE_HELP='Usage: hls_cache_chunks.sh bnt1 127.0.0.1 127.0.0.2'
 
 function gen_chunklist {
     if [ "$(cat $NGX_PLAYLIST|wc -l)" -eq "0" ]; then
@@ -52,7 +53,7 @@ function gen_chunklist {
     NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST))
 
     if [ "${WOW_CHUNKLIST[-1]}" != "$NGX_CHUNK" ]; then
-      curl -s -o /dev/null $WOW_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
+      curl -s -o /dev/null $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
       echo "#EXTINF:5.0," >>$NGX_PLAYLIST;
       echo ${WOW_CHUNKLIST[-1]} >>$NGX_PLAYLIST;
     fi
@@ -80,6 +81,13 @@ if [ -z ${2+x} ]; then
   echo $USAGE_HELP;
   exit;
 fi
+
+if [ -z ${3+x} ]; then
+  echo "nginx ip is unset";
+  echo $USAGE_HELP;
+  exit;
+fi
+
 
 rm $NGX_PLAYLIST1 $NGX_PLAYLIST2 $NGX_BITRATE1_TMP  $NGX_BITRATE2_TMP
 
