@@ -8,11 +8,12 @@
 # v.0.03                            #
 #####################################
 
-WOW_APP='dvr'
+WOW_APP='live'
+NGX_APP='dvr'
 SMIL='smil'
 NGX_CHNL_DIR_NAME=$1.$SMIL
 WOW_URL="http://$2:1935/$WOW_APP/$NGX_CHNL_DIR_NAME"
-NGX_URL="http://$3:8080/$WOW_APP/$NGX_CHNL_DIR_NAME"
+NGX_URL="http://$3:8080/$NGX_APP/$NGX_CHNL_DIR_NAME"
 WOW_PLAYLIST=$WOW_URL'/playlist.m3u8'
 BITRATE1='360p'
 RESOLUTION1='640x360'
@@ -24,14 +25,14 @@ TMP_STORE='/tmp'
 NGX_ROOT='/mnt/store/nginx_root'
 NGX_BITRATE_URL1=$1'_'$BITRATE1'.m3u8'
 NGX_BITRATE_URL2=$1'_'$BITRATE2'.m3u8'
-NGX_BITRATE1=$NGX_ROOT'/'$WOW_APP'/'$NGX_CHNL_DIR_NAME'/'$NGX_BITRATE_URL1
-NGX_BITRATE2=$NGX_ROOT'/'$WOW_APP'/'$NGX_CHNL_DIR_NAME'/'$NGX_BITRATE_URL2
-NGX_PLAYLIST1=$TMP_STORE'/'$WOW_APP.$2.$1.$BITRATE1'.tmpl'
-NGX_PLAYLIST2=$TMP_STORE'/'$WOW_APP.$2.$1.$BITRATE2'.tmpl'
-NGX_BITRATE1_TMP=$TMP_STORE'/'$WOW_APP.$2.$1.$BITRATE1'.tmp'
-NGX_BITRATE2_TMP=$TMP_STORE'/'$WOW_APP.$2.$1.$BITRATE2'.tmp'
-NGX_MAIN_PLAYLIST_TMP=$TMP_STORE'/'$WOW_APP.$2.$1.playlist'.tmp'
-NGX_MAIN_PLAYLIST=$NGX_ROOT'/'$WOW_APP'/'$NGX_CHNL_DIR_NAME'/playlist.m3u8'
+NGX_BITRATE1=$NGX_ROOT'/'$NGX_APP'/'$NGX_CHNL_DIR_NAME'/'$NGX_BITRATE_URL1
+NGX_BITRATE2=$NGX_ROOT'/'$NGX_APP'/'$NGX_CHNL_DIR_NAME'/'$NGX_BITRATE_URL2
+NGX_PLAYLIST1=$TMP_STORE'/'$NGX_APP.$2.$1.$BITRATE1'.tmpl'
+NGX_PLAYLIST2=$TMP_STORE'/'$NGX_APP.$2.$1.$BITRATE2'.tmpl'
+NGX_BITRATE1_TMP=$TMP_STORE'/'$NGX_APP.$2.$1.$BITRATE1'.tmp'
+NGX_BITRATE2_TMP=$TMP_STORE'/'$NGX_APP.$2.$1.$BITRATE2'.tmp'
+NGX_MAIN_PLAYLIST_TMP=$TMP_STORE'/'$NGX_APP.$2.$1.playlist'.tmp'
+NGX_MAIN_PLAYLIST=$NGX_ROOT'/'$NGX_APP'/'$NGX_CHNL_DIR_NAME'/playlist.m3u8'
 # in seconds
 CHUNKDURATION=5
 # in hours
@@ -49,18 +50,28 @@ function gen_chunklist {
        # Remove first 2 rows of playlist - this is how playlist rotation is made
        tail -n +2 $NGX_PLAYLIST>$NGX_PLAYLIST;
     fi
+    
+    NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST)) 
+    XMS_LAST=$(tail -n 1 $NGX_PLAYLIST|awk -F "_" '{print $5}'|awk -F "." '{print $1}')
+    XMS=$(head $NGX_PLAYLIST -n2|grep -v "#"|awk -F "_" '{print $5}'|awk -F "." '{print $1}')
 
-    NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST))
+    if [ -n "$XMS_LAST" ]; then
+      if [ -n "$XMS" ]; then
+        if [[ "$XMS_LAST" -lt "$XMS" ]]; then
+          echo ''>$NGX_PLAYLIST
+        fi
+      fi
+    fi
 
-    if [ ! -z "${WOW_CHUNKLIST[-1]}" ]; then
-      if [ "${WOW_CHUNKLIST[-1]}" != "$NGX_CHUNK" ]; then
+    if [ -n "${WOW_CHUNKLIST[-1]}" ]; then
+      XMS_WOW=$(echo ${WOW_CHUNKLIST[-1]}|awk -F "_" '{print $5}'|awk -F "." '{print $1}')
+      if [[ "$XMS_WOW" != "$XMS_LAST" ]]; then
         curl -s -o /dev/null $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
         echo "#EXTINF:5.0," >>$NGX_PLAYLIST;
         echo ${WOW_CHUNKLIST[-1]} >>$NGX_PLAYLIST;
       fi
     fi
 
-    XMS=$(head $NGX_PLAYLIST -n2|grep -v "#"|awk -F "_" '{print $4}'|awk -F "." '{print $1}')
 
     echo '#EXTM3U' >$NGX_BITRATE_TMP
     echo '#EXT-X-VERSION:3' >>$NGX_BITRATE_TMP
@@ -72,19 +83,19 @@ function gen_chunklist {
     mv $NGX_BITRATE_TMP $NGX_BITRATE
 }
 
-if [ -z ${1+x} ]; then
+if [ -z ${1+x} ]; then 
   echo "channel name is unset";
   echo $USAGE_HELP;
   exit;
 fi
 
-if [ -z ${2+x} ]; then
+if [ -z ${2+x} ]; then 
   echo "wowza ip is unset";
   echo $USAGE_HELP;
   exit;
 fi
 
-if [ -z ${3+x} ]; then
+if [ -z ${3+x} ]; then 
   echo "nginx ip is unset";
   echo $USAGE_HELP;
   exit;
@@ -93,12 +104,12 @@ fi
 
 rm $NGX_PLAYLIST1 $NGX_PLAYLIST2 $NGX_BITRATE1_TMP  $NGX_BITRATE2_TMP
 
-if [ ! -d "$NGX_ROOT/$WOW_APP" ]; then
-  mkdir "$NGX_ROOT/$WOW_APP"
+if [ ! -d "$NGX_ROOT/$NGX_APP" ]; then
+  mkdir "$NGX_ROOT/$NGX_APP"
 fi
 
-if [ ! -d "$NGX_ROOT/$WOW_APP/$NGX_CHNL_DIR_NAME" ]; then
-  mkdir "$NGX_ROOT/$WOW_APP/$NGX_CHNL_DIR_NAME"
+if [ ! -d "$NGX_ROOT/$NGX_APP/$NGX_CHNL_DIR_NAME" ]; then
+  mkdir "$NGX_ROOT/$NGX_APP/$NGX_CHNL_DIR_NAME"
 fi
 
 echo '#EXTM3U'>$NGX_MAIN_PLAYLIST_TMP
@@ -129,7 +140,7 @@ while true
     NGX_BITRATE_TMP=$NGX_BITRATE2_TMP
     NGX_BITRATE=$NGX_BITRATE2
     gen_chunklist
-
+    
     sleep 1
-
+    
 done
