@@ -48,7 +48,8 @@ function gen_chunklist {
 
     if [ "$(cat $NGX_PLAYLIST|wc -l)" -ge "$MAXLINES" ]; then
        # Remove first 2 rows of playlist - this is how playlist rotation is made
-       tail -n +3 $NGX_PLAYLIST>$NGX_PLAYLIST;
+       tail -n +3 $NGX_PLAYLIST>$NGX_PLAYLIST.tmp;
+       mv $NGX_PLAYLIST.tmp $NGX_PLAYLIST
     fi
     
     NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST)) 
