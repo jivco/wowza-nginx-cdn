@@ -8,10 +8,6 @@
 # v.0.03                            #
 #####################################
 
-# replace all:
-# {print $5} - if Wowza Origin
-# {print $4} - if HTTP Origin
-
 WOW_APP='live'
 NGX_APP='dvr'
 SMIL='smil'
@@ -56,8 +52,8 @@ function gen_chunklist {
     fi
     
     NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST)) 
-    XMS_LAST=$(tail -n 1 $NGX_PLAYLIST|awk -F "_" '{print $5}'|awk -F "." '{print $1}')
-    XMS=$(head $NGX_PLAYLIST -n2|grep -v "#"|awk -F "_" '{print $5}'|awk -F "." '{print $1}')
+    XMS_LAST=$(tail -n 1 $NGX_PLAYLIST|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
+    XMS=$(head $NGX_PLAYLIST -n2|grep -v "#"|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
 
     if [ -n "$XMS_LAST" ]; then
       if [ -n "$XMS" ]; then
@@ -68,7 +64,7 @@ function gen_chunklist {
     fi
 
     if [ -n "${WOW_CHUNKLIST[-1]}" ]; then
-      XMS_WOW=$(echo ${WOW_CHUNKLIST[-1]}|awk -F "_" '{print $5}'|awk -F "." '{print $1}')
+      XMS_WOW=$(echo ${WOW_CHUNKLIST[-1]}|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
       if [[ "$XMS_WOW" != "$XMS_LAST" ]]; then
         curl -s -o /dev/null $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
         echo "#EXTINF:5.0," >>$NGX_PLAYLIST;
