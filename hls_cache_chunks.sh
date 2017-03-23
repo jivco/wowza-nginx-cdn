@@ -8,7 +8,7 @@
 # v.0.03                            #
 #####################################
 
-WOW_APP='live'
+WOW_APP='dvr'
 NGX_APP='dvr'
 SMIL='smil'
 NGX_CHNL_DIR_NAME=$1.$SMIL
@@ -36,7 +36,7 @@ NGX_MAIN_PLAYLIST=$NGX_ROOT'/'$NGX_APP'/'$NGX_CHNL_DIR_NAME'/playlist.m3u8'
 # in seconds
 CHUNKDURATION=5
 # in hours
-DVR_WINDOW=8
+DVR_WINDOW=4
 MAXCHUNKS=$(($DVR_WINDOW*3600/$CHUNKDURATION))
 MAXLINES=$((2*$MAXCHUNKS))
 USAGE_HELP='Usage: hls_cache_chunks.sh bnt1 127.0.0.1 127.0.0.2'
@@ -46,9 +46,9 @@ function gen_chunklist {
        touch $NGX_PLAYLIST;
     fi
 
-    if [ "$(cat $NGX_PLAYLIST|wc -l)" -eq "$MAXLINES" ]; then
+    if [ "$(cat $NGX_PLAYLIST|wc -l)" -ge "$MAXLINES" ]; then
        # Remove first 2 rows of playlist - this is how playlist rotation is made
-       tail -n +2 $NGX_PLAYLIST>$NGX_PLAYLIST;
+       tail -n +3 $NGX_PLAYLIST>$NGX_PLAYLIST;
     fi
     
     NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST)) 
