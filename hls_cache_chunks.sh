@@ -8,6 +8,10 @@
 # v.0.03                            #
 #####################################
 
+# replace all:
+# {print $5} - if Wowza Origin
+# {print $4} - if HTTP Origin
+
 WOW_APP='live'
 NGX_APP='dvr'
 SMIL='smil'
@@ -58,7 +62,7 @@ function gen_chunklist {
     if [ -n "$XMS_LAST" ]; then
       if [ -n "$XMS" ]; then
         if [[ "$XMS_LAST" -lt "$XMS" ]]; then
-          echo ''>$NGX_PLAYLIST
+          echo -n ''>$NGX_PLAYLIST
         fi
       fi
     fi
