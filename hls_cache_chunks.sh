@@ -121,12 +121,12 @@ echo "$NGX_BITRATE_URL2">>$NGX_MAIN_PLAYLIST_TMP
 
 mv $NGX_MAIN_PLAYLIST_TMP $NGX_MAIN_PLAYLIST
 
+IFS=$'\r\n' GLOBIGNORE='*' command eval "BITRATE_WOW_PLAYLISTS=($(curl -s -sH 'Accept-encoding: gzip' --compressed $WOW_PLAYLIST |grep -v '#'))"
+
 while true
   do
-    IFS=$'\r\n' GLOBIGNORE='*' command eval "BITRATE_WOW_PLAYLISTS=($(curl -s -sH 'Accept-encoding: gzip' --compressed $WOW_PLAYLIST |grep -v '#'))"
     IFS=$'\r\n' GLOBIGNORE='*' command eval "WOW_CHUNKLIST1=($(curl -s -sH 'Accept-encoding: gzip' --compressed $WOW_URL/${BITRATE_WOW_PLAYLISTS[0]} |grep -v '#'))"
     IFS=$'\r\n' GLOBIGNORE='*' command eval "WOW_CHUNKLIST2=($(curl -s -sH 'Accept-encoding: gzip' --compressed $WOW_URL/${BITRATE_WOW_PLAYLISTS[1]} |grep -v '#'))"
-
     NGX_PLAYLIST=$NGX_PLAYLIST1
     NGX_CHUNK=$NGX_CHUNK1
     WOW_CHUNKLIST=("${WOW_CHUNKLIST1[@]}")
