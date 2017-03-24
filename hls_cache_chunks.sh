@@ -48,8 +48,10 @@ function gen_chunklist {
 
     if [ "$(cat $NGX_PLAYLIST|wc -l)" -ge "$MAXLINES" ]; then
        # Remove first 2 rows of playlist - this is how playlist rotation is made
+       NGX_CHUNK_RM=$(tail -n 1 $NGX_PLAYLIST)
        tail -n +3 $NGX_PLAYLIST>$NGX_PLAYLIST.tmp;
        mv $NGX_PLAYLIST.tmp $NGX_PLAYLIST
+       rm "$NGX_ROOT/$NGX_APP/$NGX_CHNL_DIR_NAME/$NGX_CHUNK_RM"
     fi
     
     NGX_CHUNK=($(tail -n 1 $NGX_PLAYLIST)) 
@@ -67,7 +69,7 @@ function gen_chunklist {
     if [ -n "${WOW_CHUNKLIST[-1]}" ]; then
       XMS_WOW=$(echo ${WOW_CHUNKLIST[-1]}|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
       if [[ "$XMS_WOW" != "$XMS_LAST" ]]; then
-        curl -s -o /dev/null $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
+        curl -s -o $NGX_ROOT/$NGX_APP/$NGX_CHNL_DIR_NAME/${WOW_CHUNKLIST[-1]} $NGX_URL/${WOW_CHUNKLIST[-1]} >/dev/null 2>&1
         echo "#EXTINF:5.0," >>$NGX_PLAYLIST;
         echo ${WOW_CHUNKLIST[-1]} >>$NGX_PLAYLIST;
       fi
