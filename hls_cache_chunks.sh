@@ -97,6 +97,8 @@ if [ -z ${2+x} ]; then
   exit;
 fi
 
+echo '<cross-domain-policy><allow-access-from domain="*" secure="false"/><site-control permitted-cross-domain-policies="all"/></cross-domain-policy>' >$NGX_ROOT'/crossdomain.xml'
+
 rm $NGX_PLAYLIST1 $NGX_PLAYLIST2 $NGX_BITRATE1_TMP  $NGX_BITRATE2_TMP
 
 if [ ! -d "$NGX_ROOT/$NGX_APP" ]; then
