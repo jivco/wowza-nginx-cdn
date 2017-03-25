@@ -34,20 +34,6 @@ WOW_TV_URL='http://'$WOW_IP':1935/'$WOW_APP'/'$TV'.smil'
 TV_PATH_TMP=$TMP_STORE'/'$WOW_IP.$NGX_APP.$TV'.smil'
 TV_PATH=$NGX_ROOT'/'$NGX_APP'/'$TV'.smil'
 
-function remove_chunks_from_dvr {
-  # delete chunks which don't fit in DVR window
-  if [ "$TOTAL_LINES" -gt "$MAX_LINES" ]; then
-    REMOVE_CHUNKS_NUM=$(($TOTAL_LINES-$MAX_LINES))
-    IFS=$'\r\n' GLOBIGNORE='*' command eval "REMOVE_CHUNKS=($(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|head -n $REMOVE_CHUNKS_NUM))"
-
-    for n in "${REMOVE_CHUNKS[@]}"
-    do
-      rm -f "$TV_PATH/$n"
-    done
-
-  fi
-}
-
 # Main start
 
 # Check for TV name
@@ -138,7 +124,17 @@ do
     mv $TV_PATH_TMP.$i'.dashed' $TV_PATH_TMP.$i.$PLAYLIST_TMP
     TOTAL_LINES=$(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|wc -l)
 
-    remove_chunks_from_dvr
+    # delete chunks which don't fit in DVR window
+    if [ "$TOTAL_LINES" -gt "$MAX_LINES" ]; then
+      REMOVE_CHUNKS_NUM=$(($TOTAL_LINES-$MAX_LINES))
+      IFS=$'\r\n' GLOBIGNORE='*' command eval "REMOVE_CHUNKS=($(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|head -n $REMOVE_CHUNKS_NUM))"
+
+      for n in "${REMOVE_CHUNKS[@]}"
+      do
+        rm -f "$TV_PATH/$n"
+      done
+
+    fi
 
   else
     rm -f $TV_PATH'/*'$CHUNK_PATTERN'*.ts'
@@ -161,17 +157,26 @@ do
     TOTAL_LINES=$(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|wc -l)
     CHUNK_PATTERN=$(echo $i|awk -F "." '{print $1}'|awk -F "_" '{print $(NF-1)"_"$NF}')
 
+    XMS=$(head $TV_PATH_TMP.$i.$PLAYLIST_TMP -n 2|grep -v '#'|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
+    LAST_CHUNK_NUM=$(tail -n 1 $TV_PATH_TMP.$i.$PLAYLIST_TMP|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
+    LAST_CHUNK_NUM=$((LAST_CHUNK_NUM+1))
+
     if [ -z ${TOTAL_LINES+x} ]; then
       XMS=0
       LAST_CHUNK_NUM="0"
     else
 
-      remove_chunks_from_dvr
+      # delete chunks which don't fit in DVR window
+      if [ "$TOTAL_LINES" -gt "$MAX_LINES" ]; then
+        REMOVE_CHUNKS_NUM=$(($TOTAL_LINES-$MAX_LINES))
+        IFS=$'\r\n' GLOBIGNORE='*' command eval "REMOVE_CHUNKS=($(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|head -n $REMOVE_CHUNKS_NUM))"
 
-      XMS=$(head $TV_PATH_TMP.$i.$PLAYLIST_TMP -n 2|grep -v '#'|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
-      LAST_CHUNK_NUM=$(tail -n 1 $TV_PATH_TMP.$i.$PLAYLIST_TMP|awk -F "_" '{print $NF}'|awk -F "." '{print $1}')
-      LAST_CHUNK_NUM=$((LAST_CHUNK_NUM++))
+        for n in "${REMOVE_CHUNKS[@]}"
+        do
+          rm -f "$TV_PATH/$n"
+        done
 
+      fi
     fi
 
     echo '#EXTM3U' >$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
@@ -182,8 +187,9 @@ do
 
     # downloading last chunk from Wowza
     WOW_CHUNK=$(curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i"|tail -n 1)
-
-    if [ "$WOW_CHUNK" != "$WOW_CHUNK_LAST" ]; then
+    declare -A WOW_CHUNK_LAST
+    
+    if [ "$WOW_CHUNK" != "${WOW_CHUNK_LAST[$i]}" ]; then
 
       curl -s $WOW_TV_URL/$WOW_CHUNK -o $TV_PATH'/media_'$CHUNK_PATTERN'_'$LAST_CHUNK_NUM'.ts'
       # writing it to temporary chunklist
@@ -195,7 +201,7 @@ do
 
       mv "$TV_PATH_TMP.$i.ready" "$TV_PATH/$i"
 
-      WOW_CHUNK_LAST=$WOW_CHUNK
+      WOW_CHUNK_LAST[$i]=$WOW_CHUNK
     fi
 
   done
