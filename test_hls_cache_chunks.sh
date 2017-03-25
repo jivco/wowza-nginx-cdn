@@ -113,8 +113,8 @@ do
   CHUNK_PATTERN=$(echo $i|awk -F "." '{print $1}'|awk -F "_" '{print $(NF-1)"_"$NF}')
 
   if [ -n "$DELETE_OLD_DATA" ]; then
-    rm -f $TV_PATH'/*'$CHUNK_PATTERN'*.ts'
-    rm -f $TV_PATH_TMP.$i.$PLAYLIST_TMP
+    rm -f $TV_PATH/*$CHUNK_PATTERN*.ts
+    rm -f $TV_PATH_TMP.$i.*
   fi
 done
 
@@ -145,15 +145,11 @@ do
     else
 
       # delete chunks which don't fit in DVR window
-      if [ "$TOTAL_LINES" -gt "$MAX_LINES" ]; then
-        REMOVE_CHUNKS_NUM=$(($TOTAL_LINES-$MAX_LINES))
-        IFS=$'\r\n' GLOBIGNORE='*' command eval "REMOVE_CHUNKS=($(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|head -n $REMOVE_CHUNKS_NUM))"
-
-        for n in "${REMOVE_CHUNKS[@]}"
-        do
-          rm -f "$TV_PATH/$n"
-        done
-
+      if [ "$TOTAL_LINES" -ge "$MAX_LINES" ]; then
+        CHUNK_RM=$(head -n 2 $TV_PATH_TMP.$i.$PLAYLIST_TMP|grep -v "#")
+        tail -n +3 $TV_PATH_TMP.$i.$PLAYLIST_TMP>$TV_PATH_TMP.$i.$PLAYLIST_TMP.tmp;
+        mv $TV_PATH_TMP.$i.$PLAYLIST_TMP.tmp $TV_PATH_TMP.$i.$PLAYLIST_TMP
+        rm "$TV_PATH/$CHUNK_RM"
       fi
     fi
 
@@ -164,7 +160,7 @@ do
     echo "$AESKEY">>$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
 
     # downloading last chunk from Wowza
-    IFS=$'\r\n' GLOBIGNORE='*' command eval "WOW_CHUNK=($(curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i"|tail -n 2))"
+    WOW_CHUNK=($(curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i"|tail -n 2|awk '{print $1}'))
 
     declare -A WOW_CHUNK_LAST
 
