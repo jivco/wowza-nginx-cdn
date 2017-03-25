@@ -20,11 +20,11 @@ TMP_STORE='/tmp'
 NGX_ROOT='/mnt/store/nginx_root'
 
 # help
-USAGE_HELP='Usage: hls_cache_chunks.sh bnt1 127.0.0.1 LOAD_OLD_DATA (you can omit "LOAD_OLD_DATA" to delete all chunks in the folder before start)'
+USAGE_HELP='Usage: hls_cache_chunks.sh bnt1 127.0.0.1 DELETE_OLD_DATA (you can omit "DELETE_OLD_DATA" to load chunks from previous session)'
 
 TV=$1
 WOW_IP=$2
-LOAD_OLD_DATA=$3
+DELETE_OLD_DATA=$3
 WOW_APP='dvr'
 NGX_APP='dvr'
 PLAYLIST='playlist.m3u8'
@@ -99,7 +99,7 @@ mv "$TV_PATH_TMP.$PLAYLIST_TMP" "$TV_PATH/$PLAYLIST"
 for i in "${BITRATE_CHUNKLISTS[@]}"
 do
 
-  # get chunkduration from Wowza chunklist
+  # get TARGETDURATION from Wowza chunklist
 
   #EXTM3U
   #EXT-X-VERSION:3
@@ -110,35 +110,9 @@ do
   #media-u6i32508m_b764000_slbul_32908.ts
 
   curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i" -o "$TV_PATH_TMP.$i.$PLAYLIST"
-  CHUNKDURATION=$(cat $TV_PATH_TMP.$i.$PLAYLIST|grep 'EXT-X-TARGETDURATION'|awk -F ":" '{print $NF}')
-  # fix - need to check why wowza gives wrong value (or wrong keyframe interval meybe)
-  CHUNKDURATION=5
-  MAX_LINES=$((2*$DVR_WINDOW*60/$CHUNKDURATION))
+  CHUNK_PATTERN=$(echo $i|awk -F "." '{print $1}'|awk -F "_" '{print $(NF-1)"_"$NF}')
 
-  if [ -n "$LOAD_OLD_DATA" ]; then
-
-    # load chunks from directory
-    CHUNK_PATTERN=$(echo $i|awk -F "." '{print $1}'|awk -F "_" '{print $(NF-1)"_"$NF}')
-    cd "$TV_PATH"
-    ls -v *$CHUNK_PATTERN*.ts>$TV_PATH_TMP.$i.$PLAYLIST_TMP
-    echo "#EXTINF:$CHUNKDURATION.0,">$TV_PATH_TMP.$i'.dashed'
-    sed ":a;N;\$!ba;s/\n/\n#EXTINF:$CHUNKDURATION.0,\n/g" $TV_PATH_TMP.$i.$PLAYLIST_TMP >>$TV_PATH_TMP.$i'.dashed'
-    mv $TV_PATH_TMP.$i'.dashed' $TV_PATH_TMP.$i.$PLAYLIST_TMP
-    TOTAL_LINES=$(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|wc -l)
-
-    # delete chunks which don't fit in DVR window
-    if [ "$TOTAL_LINES" -gt "$MAX_LINES" ]; then
-      REMOVE_CHUNKS_NUM=$(($TOTAL_LINES-$MAX_LINES))
-      IFS=$'\r\n' GLOBIGNORE='*' command eval "REMOVE_CHUNKS=($(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|head -n $REMOVE_CHUNKS_NUM))"
-
-      for n in "${REMOVE_CHUNKS[@]}"
-      do
-        rm -f "$TV_PATH/$n"
-      done
-
-    fi
-
-  else
+  if [ -n "$DELETE_OLD_DATA" ]; then
     rm -f $TV_PATH'/*'$CHUNK_PATTERN'*.ts'
     rm -f $TV_PATH_TMP.$i.$PLAYLIST_TMP
   fi
@@ -150,16 +124,14 @@ do
   for i in "${BITRATE_CHUNKLISTS[@]}"
   do
 
-    # get chunkduration and AES key from Wowza
+    # get TARGETDURATION and AES key from Wowza
     curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i" -o "$TV_PATH_TMP.$i.$PLAYLIST"
-    CHUNKDURATION=$(cat $TV_PATH_TMP.$i.$PLAYLIST|grep 'EXT-X-TARGETDURATION'|awk -F ":" '{print $NF}')
-    # look above comment about the same situation
-    CHUNKDURATION=5
+    TARGETDURATION=$(cat $TV_PATH_TMP.$i.$PLAYLIST|grep 'EXT-X-TARGETDURATION'|awk -F ":" '{print $NF}')
     AESKEY=$(cat $TV_PATH_TMP.$i.$PLAYLIST|grep 'EXT-X-KEY')
     # small fix hash
     AESKEY="${AESKEY::-1}?{encKeySessionid}\""
     # because of metadata
-    MAX_LINES=$((2*$DVR_WINDOW*60/$CHUNKDURATION))
+    MAX_LINES=$((2*$DVR_WINDOW*60/$TARGETDURATION))
     TOTAL_LINES=$(cat $TV_PATH_TMP.$i.$PLAYLIST_TMP|wc -l)
     CHUNK_PATTERN=$(echo $i|awk -F "." '{print $1}'|awk -F "_" '{print $(NF-1)"_"$NF}')
 
@@ -187,19 +159,20 @@ do
 
     echo '#EXTM3U' >$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
     echo '#EXT-X-VERSION:3' >>$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
-    echo "#EXT-X-TARGETDURATION:$CHUNKDURATION">>$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
+    echo "#EXT-X-TARGETDURATION:$TARGETDURATION">>$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
     echo "#EXT-X-MEDIA-SEQUENCE:$XMS">>$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
     echo "$AESKEY">>$TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE
 
     # downloading last chunk from Wowza
-    WOW_CHUNK=$(curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i"|tail -n 1)
+    IFS=$'\r\n' GLOBIGNORE='*' command eval "WOW_CHUNK=($(curl -s -sH 'Accept-encoding: gzip' --compressed "$WOW_TV_URL/$i"|tail -n 2))"
+
     declare -A WOW_CHUNK_LAST
 
-    if [ "$WOW_CHUNK" != "${WOW_CHUNK_LAST[$i]}" ]; then
+    if [ "${WOW_CHUNK[1]}" != "${WOW_CHUNK_LAST[$i]}" ]; then
 
-      curl -s $WOW_TV_URL/$WOW_CHUNK -o $TV_PATH'/media_'$CHUNK_PATTERN'_'$LAST_CHUNK_NUM'.ts'
+      curl -s -sH 'Accept-encoding: gzip' --compressed $WOW_TV_URL/${WOW_CHUNK[1]} -o $TV_PATH'/media_'$CHUNK_PATTERN'_'$LAST_CHUNK_NUM'.ts'
       # writing it to temporary chunklist
-      echo "#EXTINF:$CHUNKDURATION.0,">>$TV_PATH_TMP.$i.$PLAYLIST_TMP
+      echo ${WOW_CHUNK[0]}>>$TV_PATH_TMP.$i.$PLAYLIST_TMP
       echo 'media_'$CHUNK_PATTERN'_'$LAST_CHUNK_NUM'.ts'>>$TV_PATH_TMP.$i.$PLAYLIST_TMP
 
       cat $TV_PATH_TMP.$i.$PLAYLIST_TEMPLATE >$TV_PATH_TMP.$i'.ready'
@@ -207,7 +180,7 @@ do
 
       mv "$TV_PATH_TMP.$i.ready" "$TV_PATH/$i"
 
-      WOW_CHUNK_LAST[$i]=$WOW_CHUNK
+      WOW_CHUNK_LAST[$i]=${WOW_CHUNK[1]}
     fi
 
   done
