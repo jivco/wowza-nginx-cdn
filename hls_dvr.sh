@@ -3,10 +3,11 @@
 # HLS DVR and nagios check #
 #                          #
 # ztodorov@neterra.net     #
-# ver 1.10                 #
+# ver 1.11                 #
 ############################
 
 # changelog
+# ver 1.11 - 31.03.2017 - change status command to accept "yes" for lq and hq url
 # ver 1.10 - 31.03.2017 - now all errors are shown not only first detected, fixed some typos.
 # ver 1.00 - 29.03.2017 - initial commit
 
@@ -21,9 +22,9 @@ function usage() {
   echo "APPEND_DVR mode with one quality:"
   echo "Usage: ./hls_dvr.sh --mode=append_dvr --name=bnt1 --dvrwindow=480 --lqurl=udp://239.255.100.1:30000 --lqres=640x360 --lqbitrate=764000 --hqurl=none --hqres=none --hqbitrate=none"
   echo "STATUS mode with two qualities:"
-  echo "Usage: ./hls_dvr.sh --mode=status --name=bnt1 --dvrwindow=480 --lqurl=udp://239.255.100.1:30000 --hqurl=udp://239.255.100.2:30000"
+  echo "Usage: ./hls_dvr.sh --mode=status --name=bnt1 --dvrwindow=480 --lqurl=yes --hqurl=yes"
   echo "STATUS mode with one quality:"
-  echo "Usage: ./hls_dvr.sh --mode=status --name=bnt1 --dvrwindow=480 --lqurl=udp://239.255.100.1:30000 --hqurl=none"
+  echo "Usage: ./hls_dvr.sh --mode=status --name=bnt1 --dvrwindow=480 --lqurl=yes --hqurl=none"
   echo "The program kills all running processes with the same program name before starting!"
   echo "--mode        >>>>   Can be dvr / append_dvr / status. In append_dvr mode all previous chunks are saved, but you have to manually delete them after removing from playlist! In dvr mode all previous chunks are deleted!"
   echo "--name        >>>>   Name of tv channel"
