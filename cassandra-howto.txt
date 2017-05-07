@@ -68,3 +68,11 @@ yum -y install luarocks
 yum -y install lua-devel
 luarocks install lua-cassandra
 
+ffmpeg -i 'udp://239.10.3.47:30000' -aspect:v 16:9 -s 854x480 -crf 1 -r  25 -c:v libx264 -x264opts "weightb:bframes=16:keyint=125:min-keyint=125:scenecut=-1" -preset veryfast -b:v 1400000 -maxrate 1420000 -bufsize 2800000 -profile:v high -level 3.1 -trellis 1 -partitions all -acodec aac -ac 2 -ab 128k -ar 48000 -f hls -hls_list_size 3 -hls_allow_cache 1 -hls_segment_filename 'http://127.0.0.1/bnt1_480p_%04d.ts' -hls_flags delete_segments+append_list -method PUT 'http://127.0.0.1/bnt1_480p.m3u8'
+
+tc qdisc add dev enp1s0 handle 1: root htb default 11
+tc class add dev enp1s0 parent 1: classid 1:1 htb rate 50mbps
+tc class add dev enp1s0 parent 1:1 classid 1:11 htb rate 50mbps
+tc qdisc add dev enp1s0 parent 1:11 handle 10: netem delay 120ms 10ms loss 2%
+
+tc qdisc del dev enp1s0 root
