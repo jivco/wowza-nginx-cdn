@@ -8,7 +8,7 @@ yum -y localinstall http://downloads.datastax.com/php-driver/centos/7/cassandra/
 
 /etc/cassandra/conf/cassandra.yaml:
 
-cluster_name: 'Neterra TV'
+cluster_name: 'Test Cluster'
 seed_provider:
     - class_name: org.apache.cassandra.locator.SimpleSeedProvider
       parameters:
@@ -19,13 +19,13 @@ endpoint_snitch: GossipingPropertyFileSnitch
 auto_bootstrap: false
 
 /etc/cassandra/conf/cassandra-rackdc.properties:
-dc=sof1
+dc=dc1
 rack=vr1
 
 cat /etc/cassandra/conf/cassandra-topology.properties
 # Cassandra Node IP=Data Center:Rack
-192.168.8.184=sof1:vr1
-192.168.7.185=usa1:vr1
+192.168.8.184=dc1:vr1
+192.168.7.185=dc2:vr1
 
 # default for unknown nodes
 default=sof1:vr1
@@ -50,7 +50,7 @@ disable swap!!!
 
 SQL Queries for database and table creation:
 
-CREATE KEYSPACE DVR WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy','sof1' : 1, 'usa1': 1 } AND DURABLE_WRITES = false;
+CREATE KEYSPACE DVR WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy','dc1' : 1, 'dc2': 1 } AND DURABLE_WRITES = false;
 CREATE TABLE bnt1_480p_chunk_content (chunk_name text, time_id timeuuid, chunk_content blob, PRIMARY KEY (chunk_name, time_id)) WITH default_time_to_live=14400 AND gc_grace_seconds=7200;
 CREATE TABLE bnt1_480p_chunk_info (fake int, time_id timeuuid, chunk_name text, chunk_duration float, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=14400 AND gc_grace_seconds=7200 AND CLUSTERING ORDER BY ( time_id ASC );
 CREATE TABLE bnt1_480p_playlist_all (fake int, time_id timeuuid, playlist text, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=60 AND gc_grace_seconds=7200 AND CLUSTERING ORDER BY ( time_id DESC );
