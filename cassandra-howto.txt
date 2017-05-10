@@ -56,6 +56,7 @@ CREATE TABLE bnt1_480p_chunk_info (fake int, time_id timeuuid, chunk_name text, 
 CREATE TABLE bnt1_480p_playlist_all (fake int, time_id timeuuid, playlist text, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=60 AND gc_grace_seconds=7200 AND CLUSTERING ORDER BY ( time_id DESC );
 
 default - {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+get oldest playlist to avoid errors - select * from dvr.bnt1_480p_playlist_all where fake=1 order BY time_id ASC LIMIT 1;
 
 ALTER TABLE bnt1_480p_chunk_content WITH compaction = { 'class' :  'LeveledCompactionStrategy'  };
 ALTER TABLE bnt1_480p_chunk_info WITH compaction = { 'class' :  'LeveledCompactionStrategy'  };
