@@ -24,8 +24,8 @@ rack=vr1
 
 cat /etc/cassandra/conf/cassandra-topology.properties
 # Cassandra Node IP=Data Center:Rack
-192.168.8.184=dc1:vr1
-192.168.7.185=dc2:vr1
+192.168.1.184=dc1:vr1
+192.168.2.185=dc2:vr1
 
 # default for unknown nodes
 default=sof1:vr1
