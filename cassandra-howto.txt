@@ -17,6 +17,7 @@ listen_address: 192.168.1.184
 rpc_address: 192.168.1.184
 endpoint_snitch: GossipingPropertyFileSnitch
 auto_bootstrap: false
+key_cache_size_in_mb: 0 - only for scylla
 
 /etc/cassandra/conf/cassandra-rackdc.properties:
 dc=dc1
