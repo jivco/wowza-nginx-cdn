@@ -16,8 +16,10 @@ seed_provider:
 listen_address: 192.168.1.184
 rpc_address: 192.168.1.184
 endpoint_snitch: GossipingPropertyFileSnitch
+batch_size_warn_threshold_in_kb: 5000000
+batch_size_fail_threshold_in_kb: 50000000
 auto_bootstrap: false
-key_cache_size_in_mb: 0 - only for scylla
+
 
 /etc/cassandra/conf/cassandra-rackdc.properties:
 dc=dc1
@@ -29,7 +31,7 @@ cat /etc/cassandra/conf/cassandra-topology.properties
 192.168.2.185=dc2:vr1
 
 # default for unknown nodes
-default=sof1:vr1
+default=dc:vr1
 
 
 cat cat /root/.cassandra/cqlshrc 
@@ -51,7 +53,7 @@ disable swap!!!
 
 SQL Queries for database and table creation:
 
-CREATE KEYSPACE DVR WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy','dc1' : 1, 'dc2': 1 } AND DURABLE_WRITES = false;
+CREATE KEYSPACE DVR WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy','sof1' : 1, 'usa1': 1 } AND DURABLE_WRITES = false;
 
 CREATE TABLE bnt1_480p_chunk_content (chunk_name text, time_id timeuuid, chunk_content blob, PRIMARY KEY (chunk_name, time_id)) WITH default_time_to_live=28800 AND gc_grace_seconds=3600 AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
 CREATE TABLE bnt1_480p_chunk_info (fake int, time_id timeuuid, chunk_name text, chunk_duration float, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=28800 AND gc_grace_seconds=3600 AND CLUSTERING ORDER BY ( time_id ASC ) AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
@@ -62,6 +64,7 @@ CREATE TABLE bnt1_480p_playlist_all (fake int, time_id timeuuid, playlist text, 
 truncate table bnt1_480p_chunk_content;
 truncate table bnt1_480p_chunk_info;
 truncate table bnt1_480p_playlist_all;
+
 drop table bnt1_480p_chunk_content;
 drop table bnt1_480p_chunk_info;
 drop table bnt1_480p_playlist_all;
@@ -72,7 +75,7 @@ yum -y install luarocks
 yum -y install lua-devel
 luarocks install lua-cassandra
 
-ffmpeg -i 'udp://239.10.3.47:30000' -aspect:v 16:9 -s 854x480 -crf 1 -r  25 -c:v libx264 -x264opts "weightb:bframes=16:keyint=125:min-keyint=125:scenecut=-1" -preset veryfast -b:v 1400000 -maxrate 1420000 -bufsize 2800000 -profile:v high -level 3.1 -trellis 1 -partitions all -acodec aac -ac 2 -ab 128k -ar 48000 -f hls -hls_list_size 3 -hls_allow_cache 1 -hls_segment_filename 'http://127.0.0.1/bnt1_480p_%04d.ts' -hls_flags delete_segments+append_list -method PUT 'http://127.0.0.1/bnt1_480p.m3u8'
+ffmpeg -fflags +sortdts+bitexact+genpts+nofillin+igndts+discardcorrupt -i udp://224.110.0.7:30000 -vf fps=25 -aspect:v 16:9 -s 1280x576 -crf 1 -r 25 -c:v libx264 -x264opts weightb:bframes=16:keyint=125:min-keyint=125:scenecut=-1 -preset veryfast -b:v 1300000 -maxrate 1300000 -bufsize 2600000 -profile:v high -level 3.1 -trellis 1 -partitions all -acodec libfdk_aac -ac 2 -ab 128k -ar 48000 -flush_packets 0 -max_interleave_delta 0 -mpegts_original_network_id 0x1122 -mpegts_transport_stream_id 0x3344 -mpegts_service_id 0x5566 -mpegts_pmt_start_pid 0x1500 -mpegts_start_pid 0x150 -metadata service_provider=me -metadata service_name=meTV -muxrate 1600k -f hls -hls_list_size 3 -hls_allow_cache 1 -hls_segment_filename bnt1_480p_%01d.ts -hls_flags delete_segments bnt1_480p.m3u8
 
 tc qdisc add dev enp1s0 handle 1: root htb default 11
 tc class add dev enp1s0 parent 1: classid 1:1 htb rate 50mbps
