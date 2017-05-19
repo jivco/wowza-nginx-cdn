@@ -11,7 +11,7 @@ $playlist_path=$argv[2];
 $chunk_filename=$argv[3];
 $chunk_duration=$argv[4];
 
-$cluster   = Cassandra::cluster()->withContactPoints('192.168.8.184')->build();
+$cluster   = Cassandra::cluster()->withContactPoints('93.123.36.180')->build();
 $keyspace  = 'dvr';
 $session   = $cluster->connect($keyspace);
 
@@ -22,17 +22,9 @@ $chunk_content = $blob->bytes();
 $table_chunk_content=$playlist_name.'_chunk_content';
 $table_chunk_info=$playlist_name.'_chunk_info';
 $table_playlist_all=$playlist_name.'_playlist_all';
-$playlist_all_TTL='86400';
+$playlist_all_TTL='14400';
 
-$options     = new Cassandra\ExecutionOptions(array('consistency' => Cassandra::CONSISTENCY_ONE));
-
-$qry="INSERT INTO $table_chunk_content (time_id, chunk_name, chunk_content) VALUES (now(), '$chunk_filename', $chunk_content)";
-$statement   = new Cassandra\SimpleStatement($qry);
-$result = $session->execute($statement, $options);
-
-$qry="INSERT INTO $table_chunk_info (fake, time_id, chunk_name, chunk_duration) VALUES (1, now(), '$chunk_filename', $chunk_duration)";
-$statement   = new Cassandra\SimpleStatement($qry);
-$result = $session->execute($statement, $options);
+$options     = new Cassandra\ExecutionOptions(array('consistency' => Cassandra::CONSISTENCY_LOCAL_ONE));
 
 $playlist_all_start_time=get_playlist_start_time($playlist_all_TTL);
 
@@ -59,8 +51,11 @@ $playlist_all_tmp2='#EXTM3U'.PHP_EOL.'#EXT-X-TARGETDURATION:'.$targetduration.PH
 
 $playlist_all=$playlist_all_tmp2.$playlist_all_tmp1;
 
-$qry="INSERT INTO $table_playlist_all (fake, time_id, playlist) VALUES (1, now(), '$playlist_all')";
-$statement   = new Cassandra\SimpleStatement($qry);
-$result = $session->execute($statement, $options);
+$batch = new Cassandra\BatchStatement(Cassandra::BATCH_LOGGED);
+$batch->add("INSERT INTO $table_playlist_all (fake, time_id, playlist) VALUES (1, now(), '$playlist_all')");
+$batch->add("INSERT INTO $table_chunk_content (time_id, chunk_name, chunk_content) VALUES (now(), '$chunk_filename', $chunk_content)");
+$batch->add("INSERT INTO $table_chunk_info (fake, time_id, chunk_name, chunk_duration) VALUES (1, now(), '$chunk_filename', $chunk_duration)");
+$result = $session->execute($batch, $options);
 
 ?>
+
