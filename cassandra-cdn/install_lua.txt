@@ -1,5 +1,0 @@
-ln -s /usr/share/lua /usr/local/share/lua
-yum -y install luarocks
-yum -y install lua-devel
-luarocks install lua-cassandra
-luarocks install luasocket
