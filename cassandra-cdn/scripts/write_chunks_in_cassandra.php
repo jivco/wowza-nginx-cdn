@@ -47,7 +47,7 @@ foreach ($result as $row) {
    }
 		$playlist_all_tmp1.=PHP_EOL.'#EXTINF:'.$row['chunk_duration'].','.PHP_EOL.$row['chunk_name'];
 }
-$playlist_all_tmp2='#EXTM3U'.PHP_EOL.'#EXT-X-TARGETDURATION:'.$targetduration.PHP_EOL.'#EXT-X-ALLOW-CACHE:YES'.PHP_EOL.'#EXT-X-VERSION:3'.PHP_EOL.'#EXT-X-MEDIA-SEQUENCE:'.$first_chunk_num;
+$playlist_all_tmp2='#EXTM3U'.PHP_EOL.'#EXT-X-TARGETDURATION:'.$targetduration.PHP_EOL.'#EXT-X-ALLOW-CACHE:NO'.PHP_EOL.'#EXT-X-VERSION:3'.PHP_EOL.'#EXT-X-MEDIA-SEQUENCE:'.$first_chunk_num;
 
 $playlist_all=$playlist_all_tmp2.$playlist_all_tmp1;
 
