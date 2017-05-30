@@ -11,7 +11,7 @@ $playlist_path=$argv[2];
 $chunk_filename=$argv[3];
 $chunk_duration=$argv[4];
 
-$cluster   = Cassandra::cluster()->withContactPoints('93.123.36.180')->build();
+$cluster   = Cassandra::cluster()->withContactPoints('192.168.7.185')->build();
 $keyspace  = 'dvr';
 $session   = $cluster->connect($keyspace);
 
@@ -47,7 +47,7 @@ foreach ($result as $row) {
    }
 		$playlist_all_tmp1.=PHP_EOL.'#EXTINF:'.$row['chunk_duration'].','.PHP_EOL.$row['chunk_name'];
 }
-$playlist_all_tmp2='#EXTM3U'.PHP_EOL.'#EXT-X-TARGETDURATION:'.$targetduration.PHP_EOL.'#EXT-X-ALLOW-CACHE:NO'.PHP_EOL.'#EXT-X-VERSION:3'.PHP_EOL.'#EXT-X-MEDIA-SEQUENCE:'.$first_chunk_num;
+$playlist_all_tmp2='#EXTM3U'.PHP_EOL.'#EXT-X-TARGETDURATION:'.$targetduration.PHP_EOL.'#EXT-X-ALLOW-CACHE:YES'.PHP_EOL.'#EXT-X-VERSION:3'.PHP_EOL.'#EXT-X-MEDIA-SEQUENCE:'.$first_chunk_num;
 
 $playlist_all=$playlist_all_tmp2.$playlist_all_tmp1;
 
