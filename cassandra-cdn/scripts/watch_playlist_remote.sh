@@ -1,15 +1,88 @@
 #!/bin/bash
 
-URL=http://93.123.36.180:1935/cdn/ngrp:fln_eng.stream_all
-PLAYLIST_URL=$URL/chunklist_b1728000.m3u8
-PLAYLIST_NAME=bnt1_480p
-PLAYLIST_PATH=/tmp/wwwroot
+###########################
+# Get last chunk from HLS #
+# playlist and send it to #
+# a php script for import #
+# to Cassandra database   #
+#                         #
+# ztodorov@neterra.net    #
+# v0.1 01.06.2017         #
+###########################
+
+# Usage
+function usage() {
+  echo "Usage: ./watch_playlist_remote.sh --encoder=192.168.0.5 --app=dvr --tv=bnt1 --bitrate=1428000"
+  echo "--encoder    >>>>   encoder ip address"
+  echo "--app        >>>>   application name"
+  echo "--tv         >>>>   tv name"
+  echo "--bitrate    >>>>   bitrate"
+  exit 1
+}
+
+
+# Get command line parameters
+for i in "$@"
+do
+case $i in
+
+    --encoder=*)
+    ENCODER="${i#*=}"
+    shift # past argument=value
+    ;;
+    --app=*)
+    APP="${i#*=}"
+    shift # past argument=value
+    ;;
+    --tv=*)
+    TV="${i#*=}"
+    shift # past argument=value
+    ;;
+    --bitrate=*)
+    BITRATE="${i#*=}"
+    shift # past argument=value
+    ;;
+    --default)
+    DEFAULT=YES
+    shift # past argument with no value
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+done
+
+# Check for all needed command line parameters
+if [[ -z "${ENCODER}" ]]; then
+  echo "ERROR: encoder ip address is not set"
+  usage
+fi
+
+if [[ -z "${APP}" ]]; then
+  echo "ERROR: application name is not set"
+  usage
+fi
+
+if [[ -z "${TV}" ]]; then
+  echo "ERROR: tv name is not set"
+  usage
+fi
+
+if [[ -z "${BITRATE}" ]]; then
+  echo "ERROR: bitrate is not set"
+  usage
+fi
+
+URL=http://$ENCODER:1935/cdn/ngrp:$TV.stream_all
+PLAYLIST_URL=$URL/chunklist_b$BITRATE.m3u8
+
+PLAYLIST_PATH=/tmp
 PLAYLIST_SUFFIX=m3u8
-PLAYLIST=$PLAYLIST_PATH/$PLAYLIST_NAME.$PLAYLIST_SUFFIX
+PLAYLIST=$PLAYLIST_PATH/$APP.$TV.$BITRATE.$PLAYLIST_SUFFIX
 INSERT_SCILLA_PHP=/root/cassandra/write_chunks_in_scylla.php
 PHP_BIN=/usr/bin/php
-NEW=new.md5
-LAST=last.md5
+NEW=$APP.$TV.$BITRATE.new.md5
+LAST=$APP.$TV.$BITRATE.last.md5
 
 touch $PLAYLIST_PATH/$LAST
 
@@ -26,7 +99,7 @@ while true; do
     CHUNK_DURATION=${LAST_MEDIA_INFO[0]#*:}
     CHUNK_FILENAME=${LAST_MEDIA_INFO[1]}
     wget -O $PLAYLIST_PATH/$CHUNK_FILENAME $URL/$CHUNK_FILENAME
-    $PHP_BIN $INSERT_SCILLA_PHP $PLAYLIST_NAME $PLAYLIST_PATH $CHUNK_FILENAME $CHUNK_DURATION
+    $PHP_BIN $INSERT_SCILLA_PHP $APP $TV $BITRATE $PLAYLIST_PATH $CHUNK_FILENAME $CHUNK_DURATION
     rm $PLAYLIST_PATH/$CHUNK_FILENAME
   fi
   sleep 1
