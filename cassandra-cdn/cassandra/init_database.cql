@@ -1,13 +1,12 @@
 CREATE KEYSPACE DVR WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy','sof1' : 1, 'usa1': 1 } AND DURABLE_WRITES = false;
 
-CREATE TABLE bnt1_480p_chunk_content (chunk_name text, time_id timeuuid, chunk_content blob, PRIMARY KEY (chunk_name, time_id)) WITH default_time_to_live=28800 AND gc_grace_seconds=3600 AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
-CREATE TABLE bnt1_480p_chunk_info (fake int, time_id timeuuid, chunk_name text, chunk_duration float, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=28800 AND gc_grace_seconds=3600 AND CLUSTERING ORDER BY ( time_id ASC ) AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
-CREATE TABLE bnt1_480p_playlist_all (fake int, time_id timeuuid, playlist text, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=30 AND gc_grace_seconds=3600 AND CLUSTERING ORDER BY ( time_id ASC ) AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
+CREATE TABLE variant_info (id int, app text, tv text, bitrate int, codecs text, resolution text, PRIMARY KEY (id)) WITH gc_grace_seconds=86400 AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
 
-truncate table bnt1_480p_chunk_content;
-truncate table bnt1_480p_chunk_info;
-truncate table bnt1_480p_playlist_all;
+CREATE TABLE dvr_bbc_world_1428000_chunk_content (chunk_name text, time_id timeuuid, chunk_content blob, PRIMARY KEY (chunk_name, time_id)) WITH default_time_to_live=108000 AND gc_grace_seconds=86400 AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
+CREATE TABLE dvr_bbc_world_1428000_chunk_info (fake int, time_id timeuuid, chunk_name text, chunk_duration float, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=108000 AND gc_grace_seconds=86400 AND CLUSTERING ORDER BY ( time_id ASC ) AND compaction = { 'class' : 'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
 
-drop table bnt1_480p_chunk_content;
-drop table bnt1_480p_chunk_info;
-drop table bnt1_480p_playlist_all;
+CREATE TABLE dvr_bbc_world_778000_chunk_content (chunk_name text, time_id timeuuid, chunk_content blob, PRIMARY KEY (chunk_name, time_id)) WITH default_time_to_live=108000 AND gc_grace_seconds=86400 AND compaction = { 'class' :  'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
+CREATE TABLE dvr_bbc_world_778000_chunk_info (fake int, time_id timeuuid, chunk_name text, chunk_duration float, PRIMARY KEY ((fake), time_id)) WITH default_time_to_live=108000 AND gc_grace_seconds=86400 AND CLUSTERING ORDER BY ( time_id ASC ) AND compaction = { 'class' : 'LeveledCompactionStrategy','tombstone_compaction_interval':3600  };
+
+INSERT INTO variant_info (id, app, tv, bitrate, codecs, resolution) VALUES (1, 'dvr', 'bbc_world', 1428000, 'avc1.100.32,mp4a.40.2', '1024x576');
+INSERT INTO variant_info (id, app, tv, bitrate, codecs, resolution) VALUES (2, 'dvr', 'bbc_world', 778000, 'avc1.100.30,mp4a.40.2', '512x288');
