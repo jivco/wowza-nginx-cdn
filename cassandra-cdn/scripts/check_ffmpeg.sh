@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tail -n50 /tmp/ffreport.log|grep "Non-monotonous DTS in output stream"
+tail -n50 /tmp/ffreport.log|egrep '(DTS|expired|Bad)'
 
 if [ $? -eq 0 ]
 then
