@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tail -n50 /tmp/ffreport.log|egrep '(DTS|expired|Bad)'
+tail -n50 /tmp/ffreport.log|egrep '(DTS|expired|Bad|5XX)'
 
 if [ $? -eq 0 ]
 then
