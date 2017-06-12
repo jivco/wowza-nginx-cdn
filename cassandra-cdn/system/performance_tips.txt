@@ -3,6 +3,7 @@ yum -y install dstat - to monitor disk performance
 nodetool getcompactionthroughput - default is 16MB/sec - needs to be increased!
 nodetool describecluster - check if Schema versions are the same!
 nodetool status
-nodetool tablehistograms
+nodetool tablehistograms - see maximum response time!!!
+nodetool compactionstats - see number of pending tasks!!!
 
 modify LeveledCompactionStrategy tombstone_compaction_interval !!!
