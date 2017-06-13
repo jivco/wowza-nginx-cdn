@@ -6,4 +6,10 @@ nodetool status
 nodetool tablehistograms - see maximum response time!!!
 nodetool compactionstats - see number of pending tasks!!!
 
+nodetool netstats - monitor joining process
+
+for node replacement - at the end of cassandra-env.sh:
+JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=10.20.10.2"
+don't forget to remove it after booting!!!
+
 modify LeveledCompactionStrategy tombstone_compaction_interval !!!
