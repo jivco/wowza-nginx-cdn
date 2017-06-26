@@ -8,9 +8,10 @@ nodetool compactionstats - see number of pending tasks!!!
 nodetool netstats - monitor joining process
 nodetool cfstats - show table statistics and read/write latency
 nodetool proxyhistograms - read/write latency statistics including network latency - useful to see if requests encounter a slow node
+nodetool cfhistograms keyspace table - if there is huge delta between 99% and Max (say 20 times or more) you must change your compaction strategy.
 
 for node replacement - at the end of cassandra-env.sh:
 JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=10.20.10.2"
 don't forget to remove it after booting!!!
 
-modify LeveledCompactionStrategy tombstone_compaction_interval !!!
+du -h -t10k -d3 /mnt/cassandra/data/dvr/|sort -rh - get a list of tabes and their size.
