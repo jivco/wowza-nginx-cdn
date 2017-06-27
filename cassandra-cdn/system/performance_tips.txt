@@ -16,3 +16,8 @@ JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=10.20.10.2"
 don't forget to remove it after booting!!!
 
 du -h -t10k -d3 /mnt/cassandra/data/dvr/|sort -rh - get a list of tabes and their size.
+
+if compaction causes issues:
+nodetool setcompactionthroughput 16 - throttle compaction
+nodetool stop compaction - stop and disable compaction
+nodetool disablebinary && nodetool disablegossip && nodetool disablethrift && nodetool setcompactionthroughput 0 - take the node out (and unthrottle)
