@@ -10,6 +10,8 @@ nodetool cfstats - show table statistics and read/write latency
 nodetool proxyhistograms - read/write latency statistics including network latency - useful to see if requests encounter a slow node
 nodetool cfhistograms keyspace table - if there is huge delta between 99% and Max (say 20 times or more) you must change your compaction strategy.
 nodetool tpstats - show status of active tasks
+nodetool listsnapshots - to see if there are unused snapshots
+nodetool clearsnapshots
 
 for node replacement - at the end of cassandra-env.sh:
 JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=10.20.10.2"
