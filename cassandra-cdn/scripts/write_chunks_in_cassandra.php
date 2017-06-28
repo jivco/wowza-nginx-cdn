@@ -21,7 +21,7 @@ $chunk_content = $blob->bytes();
 
 $table_chunk_content=$app.'_'.$tv.'_'.$bitrate.'_chunk_content';
 $table_chunk_info=$app.'_'.$tv.'_'.$bitrate.'_chunk_info';
-$table_variant_info='variant_info';
+$table_variant_info=$app.'_variant_info';
 
 $options     = new Cassandra\ExecutionOptions(array('consistency' => Cassandra::CONSISTENCY_LOCAL_ONE));
 
