@@ -64,7 +64,7 @@ CREATE TABLE dvr.dvr_bbc_entertainment_1428000_chunk_content (
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.variant_info (
+CREATE TABLE dvr.dvr_variant_info (
     app text,
     tv text,
     bitrate int,
