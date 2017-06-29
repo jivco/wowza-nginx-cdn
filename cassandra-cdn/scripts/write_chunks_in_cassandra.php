@@ -38,7 +38,7 @@ if ($last_chunk_num) {
   $chunk_filename_universal='media_b'.$bitrate.'_'.$last_chunk_num.'.ts';
 
   $batch = new Cassandra\BatchStatement(Cassandra::BATCH_LOGGED);
-  $batch->add("INSERT INTO $table_chunk_content (time_id, chunk_name, chunk_content) VALUES (now(), '$chunk_filename_universal', $chunk_content)");
+  $batch->add("INSERT INTO $table_chunk_content (chunk_name, chunk_content) VALUES ('$chunk_filename_universal', $chunk_content)");
   $batch->add("INSERT INTO $table_chunk_info (fake, time_id, chunk_name, chunk_duration) VALUES (1, now(), '$chunk_filename_universal', $chunk_duration)");
   $last_chunk_num++;
   $batch->add("UPDATE $table_variant_info SET last_chunk_num=$last_chunk_num WHERE app='$app' AND tv='$tv' AND bitrate=$bitrate");
