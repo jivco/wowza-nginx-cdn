@@ -1,5 +1,7 @@
 yum -y install dstat - to monitor disk performance
 
+auto_bootstrap: false - when you init cluster for first time
+
 Use G1 as the Java garbage collector with at least 14GB heap size (see jvm.options) so the garbage collector will run less frequent.
 
 nodetool getcompactionthroughput - default is 16MB/sec - needs to be increased!
