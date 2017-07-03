@@ -3,7 +3,7 @@
 HOST=192.168.7.152
 COUNT=1000
 
-DVR_HOURS=1
+DVR_HOURS=4
 
 echo "Start: " `date`
 
@@ -26,9 +26,7 @@ STREAMS_NUM=$((${#STREAMS[@]}-1))
 
 #echo ${STREAMS[*]}
 
-echo "Transactions per second (TPS)"
-echo "Mean time per transaction(MTPT)"
-echo "Last transaction time (LTP)"
+echo "Mean time per transaction(MTPT) | Transactions per second (TPS) | TPS/MTPT | Last transaction time (LTP)"
 
 TIME=0
 ERRORS=0
@@ -70,10 +68,11 @@ do
 
   if [ "$MEAN" -gt "0" ]; then
     TPS=`echo "1000 / $MEAN"|bc`
+    TPSMTPT=`echo "$TPS / $MEAN"|bc -l`
   fi
   
-  DONE=`echo $i*100/$COUNT|bc`
-  echo -en "\rDone: $DONE% Errors: $ERRORS MTPT: $MEAN ms / TPS: $TPS LTT: $QRY_TIME ms   "
+  DONE=`echo "$i*100/$COUNT"|bc`
+  echo -en "\rDone: $DONE% | Errors: $ERRORS | MTPT: $MEAN ms | TPS: $TPS | TPS/MTPT=$TPSMTPT | LTT: $QRY_TIME ms   "
   
    
 done 
