@@ -31,6 +31,7 @@ echo "Mean time per transaction(MTPT)"
 echo "Last transaction time (LTP)"
 
 TIME=0
+ERRORS=0
 
 for i in `seq 1 $COUNT`;
 do
@@ -53,7 +54,12 @@ do
   #echo $FIRST_CHUNK
 
   DATE1=$(($(date +%s%N)/1000000))
-  curl -s -o /dev/null http://$HOST/dvr/$TV/$BITRATE/60/media_b$BITRATE\_$CHUNK.ts
+  curl -s -I http://$HOST/dvr/$TV/$BITRATE/60/media_b$BITRATE\_$CHUNK.ts|grep HTTP|grep "200 OK" >/dev/null
+  
+  if [ "$?" -ne "0" ]; then
+    ((ERRORS++))
+  fi
+
   DATE2=$(($(date +%s%N)/1000000))
   QRY_TIME=`echo "$DATE2-$DATE1"|bc`
   #echo "TV BBITRATE CHUNK/NO TF: $TV/$BITRATE/$CHUNK/$QRY_TIME"
@@ -67,7 +73,7 @@ do
   fi
   
   DONE=`echo $i*100/$COUNT|bc`
-  echo -en "\rDone: $DONE% MTPT): $MEAN ms / TPS: $TPS LTT: $QRY_TIME ms   "
+  echo -en "\rDone: $DONE% Errors: $ERRORS MTPT: $MEAN ms / TPS: $TPS LTT: $QRY_TIME ms   "
   
    
 done 
