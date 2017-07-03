@@ -1,9 +1,9 @@
 #!/bin/bash
 
 HOST=192.168.7.152
-COUNT=10000
+COUNT=1000
 
-DVR_HOURS=24
+DVR_HOURS=1
 
 echo "Start: " `date`
 
@@ -25,6 +25,10 @@ STREAMS[10]='abmoteurs|1692000'
 STREAMS_NUM=$((${#STREAMS[@]}-1))
 
 #echo ${STREAMS[*]}
+
+echo "Transactions per second (TPS)"
+echo "Mean time per transaction(MTPT)"
+echo "Last transaction time (LTP)"
 
 TIME=0
 
@@ -54,17 +58,16 @@ do
   QRY_TIME=`echo "$DATE2-$DATE1"|bc`
   #echo "TV BBITRATE CHUNK/NO TF: $TV/$BITRATE/$CHUNK/$QRY_TIME"
 
-    TIME=`echo "$TIME + $QRY_TIME"|bc`
+  TIME=`echo "$TIME + $QRY_TIME"|bc`
 
-    MEAN=`echo "$TIME / $COUNT"|bc`
+  MEAN=`echo "$TIME / $COUNT"|bc`
 
-  if [ "$MEAN" -gt "0" ]
-    then
-   
+  if [ "$MEAN" -gt "0" ]; then
     TPS=`echo "1000 / $MEAN"|bc`
   fi
-
-    echo -en "\rTransaction time: $MEAN ms / TPS: $TPS"
+  
+  DONE=`echo $i*100/$COUNT|bc`
+  echo -en "\rDone: $DONE% MTPT): $MEAN ms / TPS: $TPS LTT: $QRY_TIME ms   "
   
    
 done 
