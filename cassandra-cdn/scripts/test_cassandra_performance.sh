@@ -26,7 +26,7 @@ STREAMS_NUM=$((${#STREAMS[@]}-1))
 
 #echo ${STREAMS[*]}
 
-echo "Mean time per transaction(MTPT) | Transactions per second (TPS) | TPS/MTPT | Last transaction time (LTP)"
+echo "Mean time per transaction(MTPT) | Transactions per second (TPS) | TPS/MTPT | Last transaction time (LTT)"
 
 TIME=0
 ERRORS=0
