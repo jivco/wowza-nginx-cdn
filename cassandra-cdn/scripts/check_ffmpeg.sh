@@ -16,6 +16,13 @@ then
   RESTART=1
 fi
 
+tail /var/log/nss/nssd.log|grep Timeout|grep "`date --date='1 minutes ago' +"%Y/%m/%d %H:%M"`"|grep "'a'"
+
+if [ $? -eq 0 ]
+then
+  RESTART=1
+fi
+
 if [ "$RESTART" -eq "1" ]
 then
    kill -9 `cat /var/run/ffmpeg.pid`
