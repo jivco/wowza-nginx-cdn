@@ -173,7 +173,7 @@ if [ ! -f "$KEYINFO" ]; then
 fi
 
 # convert DVR window in chunks
-DVRWINDOW=$((DVRWINDOW*60/CHUNKDURATION*1000))
+DVRWINDOW=$((DVRWINDOW*60*1000/CHUNKDURATION))
 
 LQPID=`ps ax|grep 'SCREEN -dmS'|grep $UNQ_STR|grep $NAME'_'$LQ|grep -v grep|awk '{print $1}'`
 HQPID=`ps ax|grep 'SCREEN -dmS'|grep $UNQ_STR|grep $NAME'_'$HQ|grep -v grep|awk '{print $1}'`
