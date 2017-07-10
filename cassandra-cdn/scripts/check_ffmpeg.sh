@@ -2,7 +2,7 @@
 
 RESTART=0
 
-tail -n50 /tmp/ffreport.log|egrep '(DTS|expired|Bad|5XX)'
+tail -n50 /tmp/ffreport.log|egrep '(DTS|expired|Bad|5XX|Delay between the first packet and last packet in the muxing queue is|Invalid data)'
 
 if [ $? -eq 0 ]
 then
