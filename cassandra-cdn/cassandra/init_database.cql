@@ -1,25 +1,6 @@
-
 CREATE KEYSPACE dvr WITH replication = {'class': 'NetworkTopologyStrategy', 'sof1': '1', 'usa1': '1'}  AND durable_writes = false;
 
-CREATE TABLE dvr.dvr_bbc_world_778000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_abmoteurs_942000_chunk_info (
+CREATE TABLE dvr.dvr_axnwhite_778000_chunk_info (
     fake int,
     time_id timeuuid,
     chunk_duration float,
@@ -29,29 +10,29 @@ CREATE TABLE dvr.dvr_abmoteurs_942000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_bbc_entertainment_1428000_chunk_content (
+CREATE TABLE dvr.dvr_axn_778000_chunk_content (
     chunk_name text PRIMARY KEY,
     chunk_content blob
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
+    AND default_time_to_live = 43200
     AND gc_grace_seconds = 60
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
@@ -59,25 +40,7 @@ CREATE TABLE dvr.dvr_bbc_entertainment_1428000_chunk_content (
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_abmoteurs_3192000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_bbc_world_1428000_chunk_info (
+CREATE TABLE dvr.dvr_axnblack_778000_chunk_info (
     fake int,
     time_id timeuuid,
     chunk_duration float,
@@ -87,19 +50,19 @@ CREATE TABLE dvr.dvr_bbc_world_1428000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_abmoteurs_3192000_chunk_info (
+CREATE TABLE dvr.dvr_bnt2_1428000_chunk_info (
     fake int,
     time_id timeuuid,
     chunk_duration float,
@@ -109,55 +72,19 @@ CREATE TABLE dvr.dvr_abmoteurs_3192000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_abmoteurs_942000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_bbc_world_1428000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_mtv_rocks_778000_chunk_info (
+CREATE TABLE dvr.dvr_ams_1428000_chunk_info (
     fake int,
     time_id timeuuid,
     chunk_duration float,
@@ -167,29 +94,29 @@ CREATE TABLE dvr.dvr_mtv_rocks_778000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_mtv_rocks_1428000_chunk_content (
+CREATE TABLE dvr.dvr_bnt2_1428000_chunk_content (
     chunk_name text PRIMARY KEY,
     chunk_content blob
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
+    AND default_time_to_live = 43200
     AND gc_grace_seconds = 60
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
@@ -197,43 +124,7 @@ CREATE TABLE dvr.dvr_mtv_rocks_1428000_chunk_content (
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_mtv_rocks_778000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_fln_eng_1428000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_bbc_entertainment_1428000_chunk_info (
+CREATE TABLE dvr.dvr_axn_778000_chunk_info (
     fake int,
     time_id timeuuid,
     chunk_duration float,
@@ -243,11 +134,29 @@ CREATE TABLE dvr.dvr_bbc_entertainment_1428000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_btv_778000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
     AND gc_grace_seconds = 60
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
@@ -255,18 +164,498 @@ CREATE TABLE dvr.dvr_bbc_entertainment_1428000_chunk_info (
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_bbc_entertainment_778000_chunk_content (
+CREATE TABLE dvr.dvr_bnt1_778000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnthd_778000_chunk_content (
     chunk_name text PRIMARY KEY,
     chunk_content blob
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
+    AND default_time_to_live = 43200
     AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnthd_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axnwhite_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axnblack_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnt1_778000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axn_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_btv_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bntsat_778000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_btv_778000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bntsat_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnthd_778000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnt1_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axnwhite_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axnwhite_778000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnt2_778000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnt1_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axnblack_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axnblack_778000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bntsat_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_btv_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_axn_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_ams_1428000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bntsat_778000_chunk_content (
+    chunk_name text PRIMARY KEY,
+    chunk_content blob
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 60
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+CREATE TABLE dvr.dvr_bnthd_1428000_chunk_info (
+    fake int,
+    time_id timeuuid,
+    chunk_duration float,
+    chunk_name text,
+    PRIMARY KEY (fake, time_id)
+) WITH CLUSTERING ORDER BY (time_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'enabled': 'false'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 43200
+    AND gc_grace_seconds = 86400
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
     AND min_index_interval = 128
@@ -285,179 +674,29 @@ CREATE TABLE dvr.dvr_variant_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
     AND default_time_to_live = 0
-    AND gc_grace_seconds = 60
+    AND gc_grace_seconds = 86400
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
 
-CREATE TABLE dvr.dvr_fln_eng_778000_chunk_info (
-    fake int,
-    time_id timeuuid,
-    chunk_duration float,
-    chunk_name text,
-    PRIMARY KEY (fake, time_id)
-) WITH CLUSTERING ORDER BY (time_id ASC)
-    AND bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_abmoteurs_1692000_chunk_info (
-    fake int,
-    time_id timeuuid,
-    chunk_duration float,
-    chunk_name text,
-    PRIMARY KEY (fake, time_id)
-) WITH CLUSTERING ORDER BY (time_id ASC)
-    AND bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_mtv_rocks_1428000_chunk_info (
-    fake int,
-    time_id timeuuid,
-    chunk_duration float,
-    chunk_name text,
-    PRIMARY KEY (fake, time_id)
-) WITH CLUSTERING ORDER BY (time_id ASC)
-    AND bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_bbc_entertainment_778000_chunk_info (
-    fake int,
-    time_id timeuuid,
-    chunk_duration float,
-    chunk_name text,
-    PRIMARY KEY (fake, time_id)
-) WITH CLUSTERING ORDER BY (time_id ASC)
-    AND bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_bbc_world_778000_chunk_info (
-    fake int,
-    time_id timeuuid,
-    chunk_duration float,
-    chunk_name text,
-    PRIMARY KEY (fake, time_id)
-) WITH CLUSTERING ORDER BY (time_id ASC)
-    AND bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_fln_eng_1428000_chunk_info (
-    fake int,
-    time_id timeuuid,
-    chunk_duration float,
-    chunk_name text,
-    PRIMARY KEY (fake, time_id)
-) WITH CLUSTERING ORDER BY (time_id ASC)
-    AND bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_abmoteurs_1692000_chunk_content (
+CREATE TABLE dvr.dvr_bnt2_778000_chunk_content (
     chunk_name text PRIMARY KEY,
     chunk_content blob
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
-    AND gc_grace_seconds = 60
-    AND max_index_interval = 2048
-    AND memtable_flush_period_in_ms = 0
-    AND min_index_interval = 128
-    AND read_repair_chance = 0.0
-    AND speculative_retry = '99PERCENTILE';
-
-CREATE TABLE dvr.dvr_fln_eng_778000_chunk_content (
-    chunk_name text PRIMARY KEY,
-    chunk_content blob
-) WITH bloom_filter_fp_chance = 0.01
-    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
-    AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '1', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
-    AND compression = {'enabled': 'false'}
-    AND crc_check_chance = 1.0
-    AND dclocal_read_repair_chance = 0.1
-    AND default_time_to_live = 86400
+    AND default_time_to_live = 43200
     AND gc_grace_seconds = 60
     AND max_index_interval = 2048
     AND memtable_flush_period_in_ms = 0
@@ -466,14 +705,21 @@ CREATE TABLE dvr.dvr_fln_eng_778000_chunk_content (
     AND speculative_retry = '99PERCENTILE';
 
 
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','abmoteurs',942000,'avc1.100.30,mp4a.40.2',1,'640x360');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','abmoteurs',1692000,'avc1.100.32,mp4a.40.2',1,'1280x720');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','abmoteurs',3192000,'avc1.100.41,mp4a.40.2',1,'1920x1080');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bbc_entertainment',778000,'avc1.100.30,mp4a.40.2',1,'512x288');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bbc_entertainment',1428000,'avc1.100.32,mp4a.40.2',1,'1024x576');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bbc_world',778000,'avc1.100.30,mp4a.40.2',1,'512x288');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bbc_world',1428000,'avc1.100.32,mp4a.40.2',1,'1024x576');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','fln_eng',778000,'avc1.100.30,mp4a.40.2',1,'512x288');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','fln_eng',1428000,'avc1.100.32,mp4a.40.2',1,'1024x576');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','mtv_rocks',778000,'avc1.100.30,mp4a.40.2',1,'512x288');
-INSERT INTO variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','mtv_rocks',1428000,'avc1.100.32,mp4a.40.2',1,'1024x576');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','ams',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','axnblack',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','axn',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','axnwhite',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bnt1',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bnt2',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bnthd',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bntsat',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','btv',1428000,'avc1.100.32,mp4a.40.2',1,'720x572');
+
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','axnblack',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','axn',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','axnwhite',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bnt1',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bnt2',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bnthd',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','bntsat',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
+INSERT INTO dvr_variant_info (app,tv,bitrate,codecs,last_chunk_num,resolution) VALUES ('dvr','btv',778000,'avc1.100.30,mp4a.40.2',1,'640x360');
