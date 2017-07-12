@@ -3,10 +3,11 @@
 # HLS DVR and nagios check #
 #                          #
 # ztodorov@neterra.net     #
-# ver 1.11                 #
+# ver 1.12                 #
 ############################
 
 # changelog
+# ver 1.12 - 12.07.2017 - added large udp input buffers and fix typo error in counting chunks
 # ver 1.11 - 31.03.2017 - change status command to accept "yes" for lq and hq url
 # ver 1.10 - 31.03.2017 - now all errors are shown not only first detected, fixed some typos.
 # ver 1.00 - 29.03.2017 - initial commit
