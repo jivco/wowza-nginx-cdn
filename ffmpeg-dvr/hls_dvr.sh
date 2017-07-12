@@ -145,16 +145,16 @@ NGX_ROOT='/mnt/store/nginx_root'
 # path to HLS key info file
 # key info file can be generated with following commands
 # key.txt:
-# 1234561432561681489616468468468
+# 7C42F51202FABCA34A38758FA8902A09
 #
 # xxd -r -p key.txt key.enc
 #
-#neterra.keyinfo:
-#http://localhost/keys/key?{encKeySessionid}
+#localhost.keyinfo:
+#http://clappr.localhost.tv/keys/key?{encKeySessionid}
 #/mnt/store/key.enc
 KEYINFO='/mnt/store/localhost.keyinfo'
 # string to append to screen name to be sure to kill right processes
-UNQ_STR='RND'
+UNQ_STR='NTR'
 # low quality string
 LQ='LQ'
 # high quality string
@@ -258,11 +258,11 @@ else
   fi
   cd "$PROGRAM_ROOT"
 
-  $SCREEN -dmS $NAME'_'$LQ $FFMPEG -i $LQURL -c copy -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename \
+  $SCREEN -dmS $NAME'_'$LQ $FFMPEG -i $LQURL\?buffer_size=65535 -c copy -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename \
   $NAME'_dvr_'$RANDOM_STR'_'$LQ'_'%04d.ts -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$LQ.m3u8
 
   if [ "${HQURL}" != "none" ]; then
-    $SCREEN -dmS $NAME'_'$HQ $FFMPEG -i $HQURL -c copy -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename \
+    $SCREEN -dmS $NAME'_'$HQ $FFMPEG -i $HQURL\?buffer_size=65535 -c copy -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename \
     $NAME'_dvr_'$RANDOM_STR'_'$HQ'_'%04d.ts -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8
   fi
 
