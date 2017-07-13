@@ -16,4 +16,4 @@ mkfifo $LOG
 
 ((FFREPORT=file=$FIFO /root/bin/ffmpeg -re -i http://172.16.21.1/$APP/$TV/$BITRATE/$OFFSET/chunklist.m3u8 -c copy -f mpegts "udp://127.0.0.1:$PORT?pkt_size=1316" >/dev/null 2>/dev/null) & echo $! > $PID &)
 
-cat < $FIFO >>$LOG
+cat < $FIFO >>$LOG &
