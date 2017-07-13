@@ -16,12 +16,14 @@ then
   RESTART=1
 fi
 
-tail -n500 /var/log/nss/nssd.log|grep Timeout|grep "`date --date='1 minutes ago' +"%Y/%m/%d %H:%M"`"|grep "'btv-sd2'"
+cat /var/log/nss/nssd.log|grep Timeout|grep "`date --date='1 minutes ago' +"%Y/%m/%d %H:%M"`"|grep "'btv-sd2'"
 
 if [ $? -eq 0 ]
 then
   RESTART=1
 fi
+
+truncate -s 0 /tmp/ffreport15.log
 
 if [ "$RESTART" -eq "1" ]
 then
