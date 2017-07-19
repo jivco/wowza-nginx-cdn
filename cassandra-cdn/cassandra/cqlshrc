@@ -3,3 +3,5 @@ hostname=192.168.1.184
 
 [authentication]
 keyspace=dvr
+username = root
+password = 12345678
