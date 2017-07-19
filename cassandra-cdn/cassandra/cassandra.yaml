@@ -13,3 +13,9 @@ batch_size_fail_threshold_in_kb: 50000000
 compaction_throughput_mb_per_sec: 128
 concurrent_compactors: 4
 auto_bootstrap: false
+
+#auth settings
+authenticator: PasswordAuthenticator
+authorizer: CassandraAuthorizer
+roles_validity_in_ms: 600000
+permissions_validity_in_ms: 600000
