@@ -1,4 +1,19 @@
-CREATE KEYSPACE dvr WITH replication = {'class': 'NetworkTopologyStrategy', 'sof1': '1', 'usa1': '1'}  AND durable_writes = false;
+ALTER KEYSPACE "system_auth" WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 1, 'dc2' : 1};
+CREATE ROLE root WITH PASSWORD = '12345678' AND SUPERUSER = true AND LOGIN = true;
+ALTER ROLE cassandra WITH PASSWORD='87654321' AND SUPERUSER=false;
+
+CREATE ROLE nginx WITH PASSWORD = '123456' AND LOGIN = true;
+CREATE ROLE php WITH PASSWORD = '12345' AND LOGIN = true;
+CREATE ROLE dvr_readonly WITH PASSWORD = '1234567';
+CREATE ROLE dvr_write WITH PASSWORD = '1234567';
+GRANT SELECT ON KEYSPACE dvr TO dvr_readonly;
+GRANT SELECT ON KEYSPACE dvr TO dvr_write;
+GRANT MODIFY ON KEYSPACE dvr TO dvr_write;
+GRANT dvr_readonly TO nginx;
+GRANT dvr_write TO php;
+
+
+CREATE KEYSPACE dvr WITH replication = {'class': 'NetworkTopologyStrategy', 'dc1': '1', 'dc2': '1'}  AND durable_writes = false;
 
 CREATE TABLE dvr.dvr_axnwhite_778000_chunk_info (
     fake int,
