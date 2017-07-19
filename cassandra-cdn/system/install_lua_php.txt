@@ -11,4 +11,4 @@ luarocks install lua-cassandra
 luarocks install luasocket
 
 mkdir /usr/share/lua/5.1/dvr
-cp ../dvr/init.lua /usr/share/lua/5.1/dvr/
+cp lua/dvr/init.lua /usr/share/lua/5.1/dvr/
