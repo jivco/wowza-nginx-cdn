@@ -11,7 +11,7 @@ $chunk_duration=$argv[6];
 
 $last_chunk_num='';
 
-$cluster   = Cassandra::cluster()->withContactPoints('192.168.7.152')->build();
+$cluster   = Cassandra::cluster()->withContactPoints('127.0.0.1')->withCredentials("php", "12345")->build();
 $keyspace  = 'dvr';
 $session   = $cluster->connect($keyspace);
 
