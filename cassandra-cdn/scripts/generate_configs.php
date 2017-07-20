@@ -1,7 +1,7 @@
 
 <?php
 
-$csv_file='/home/ztodorov/src/cdn/cassandra/tv_channels.csv';
+$csv_file='tv_channels.csv';
 $database='dvr';
 $app='dvr';
 $nssd_log = '/var/log/nss/nssd.log';
@@ -53,10 +53,9 @@ if (($handle = fopen($csv_file, "r")) !== false) {
     $cql_data.= "\n";
     file_put_contents($file_cql, $cql_data, FILE_APPEND);
 
-    $hls_udp_data='#!/bin/bash';
-    $hls_udp_data.= "\n";
-    file_put_contents($file_watch, $hls_udp_data, FILE_APPEND);
-    file_put_contents($file_check, $hls_udp_data, FILE_APPEND);
+    $init_data='#!/bin/bash'."\n";
+    file_put_contents($file_watch, $init_data, FILE_APPEND);
+    file_put_contents($file_check, $init_data, FILE_APPEND);
 
     while (($data = fgetcsv($handle, 1000, ",")) !== false) {
         $num = count($data);
@@ -124,7 +123,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
             $cql_data.= "\n";
 
             $port1=PORT1+$port;
-            $nss_data='SERVICE, Name = '.$tv.'-sd1, Class = CLASS_INPUT, Type = INPUT_LIVE, KeepAlive = TRUE, Buffer_size = 2M, SOURCE = "udp://127.0.0.1:'.$port1.'"'."\n";
+            $nss_data='SERVICE, Name = '.$tv.'-sd1, Class = CLASS_INPUT, Type = INPUT_LIVE, KeepAlive = TRUE, Buffer_size = 2M, SOURCE = "udp://@127.0.0.1:'.$port1.'"'."\n";
             file_put_contents($file_nss, $nss_data, FILE_APPEND);
 
             if ($data[1]===$app) {
@@ -159,7 +158,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                                           then
                                           kill -9 `cat '.$pid.'`'."\n";
                 $check_data.= "mkfifo $fifo\n";
-                $check_data.= "((FFREPORT=file=$fifo /root/bin/ffmpeg -re -i http://172.16.21.1/$app/$tv/$bitrate1/".OFFSET.'/chunklist.m3u8 -c copy -f mpegts "udp://127.0.0.1:'.$port1.'?pkt_size=1316" >/dev/null 2>/dev/null) & echo $! > '.$pid.' &)'."\n";
+                $check_data.= "((FFREPORT=file=$fifo /root/bin/ffmpeg -re -i http://172.16.21.1/$app/$tv/$bitrate1/".OFFSET.'/chunklist.m3u8 -c copy -f mpegts "udp://@127.0.0.1:'.$port1.'?pkt_size=1316" >/dev/null 2>/dev/null) & echo $! > '.$pid.' &)'."\n";
                 $check_data.= 'cat < '.$fifo.' >>'.$log.' &'."\n\n";
                 $check_data.='echo "`date` - fmpeg-'.$app.'-'.$tv.'-'.$bitrate1.' restarted">>/tmp/check_ffmpeg.log'."\n";
                 $check_data.='fi'."\n";
