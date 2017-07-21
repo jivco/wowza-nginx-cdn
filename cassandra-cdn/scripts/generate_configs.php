@@ -38,7 +38,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
      AND bloom_filter_fp_chance = 0.01
      AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
      AND comment = ''
-     AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+     AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
      AND compression = {'enabled': 'false'}
      AND crc_check_chance = 1.0
      AND dclocal_read_repair_chance = 0.1
@@ -86,7 +86,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                     AND bloom_filter_fp_chance = 0.01
                     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                     AND comment = ''
-                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
                     AND compression = {'enabled': 'false'}
                     AND crc_check_chance = 1.0
                     AND dclocal_read_repair_chance = 0.1
@@ -106,7 +106,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                     ) WITH bloom_filter_fp_chance = 0.01
                     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                     AND comment = ''
-                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
                     AND compression = {'enabled': 'false'}
                     AND crc_check_chance = 1.0
                     AND dclocal_read_repair_chance = 0.1
@@ -183,7 +183,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                   AND bloom_filter_fp_chance = 0.01
                   AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                   AND comment = ''
-                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
                   AND compression = {'enabled': 'false'}
                   AND crc_check_chance = 1.0
                   AND dclocal_read_repair_chance = 0.1
@@ -203,7 +203,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                   ) WITH bloom_filter_fp_chance = 0.01
                   AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                   AND comment = ''
-                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
+                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
                   AND compression = {'enabled': 'false'}
                   AND crc_check_chance = 1.0
                   AND dclocal_read_repair_chance = 0.1
