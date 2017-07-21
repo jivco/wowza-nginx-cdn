@@ -25,7 +25,7 @@ CREATE TABLE dvr.dvr_bnt1_778000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
@@ -43,7 +43,7 @@ CREATE TABLE dvr.dvr_bnt1_778000_chunk_content (
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
@@ -65,7 +65,7 @@ CREATE TABLE dvr.dvr_bnt1_1428000_chunk_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
@@ -83,7 +83,7 @@ CREATE TABLE dvr.dvr_bnt1_1428000_chunk_content (
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
@@ -107,7 +107,7 @@ CREATE TABLE dvr.dvr_variant_info (
     AND bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
     AND comment = ''
-    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
     AND compression = {'enabled': 'false'}
     AND crc_check_chance = 1.0
     AND dclocal_read_repair_chance = 0.1
