@@ -1,4 +1,3 @@
-
 <?php
 
 $csv_file='tv_channels.csv';
@@ -9,6 +8,8 @@ $file_cql = '/tmp/genconfig_cql.txt';
 $file_nss = '/tmp/genconfig_nss.txt';
 $file_watch = '/tmp/genconfig_watch.txt';
 $file_check = '/tmp/genconfig_check.txt';
+$file_wowza = '/tmp/genconfig_wowza.txt';
+$file_wowza_startup = '/tmp/genconfig_wowza_startup.txt';
 $gpu='1';
 
 const PORT1=30000;
@@ -20,11 +21,12 @@ exec('rm -f '.$file_cql);
 exec('rm -f '.$file_nss);
 exec('rm -f '.$file_watch);
 exec('rm -f '.$file_check);
+exec('rm -f '.$file_wowza);
+exec('rm -f '.$file_wowza_startup);
 
 //start cycle
 $row = 2;
 if (($handle = fopen($csv_file, "r")) !== false) {
-
     $cql_data= "
      CREATE TABLE dvr.dvr_variant_info (
          app text,
@@ -38,7 +40,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
      AND bloom_filter_fp_chance = 0.01
      AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
      AND comment = ''
-     AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+     AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
      AND compression = {'enabled': 'false'}
      AND crc_check_chance = 1.0
      AND dclocal_read_repair_chance = 0.1
@@ -56,6 +58,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
     $init_data='#!/bin/bash'."\n";
     file_put_contents($file_watch, $init_data, FILE_APPEND);
     file_put_contents($file_check, $init_data, FILE_APPEND);
+    file_put_contents($file_wowza, $init_data, FILE_APPEND);
 
     while (($data = fgetcsv($handle, 1000, ",")) !== false) {
         $num = count($data);
@@ -86,7 +89,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                     AND bloom_filter_fp_chance = 0.01
                     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                     AND comment = ''
-                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
                     AND compression = {'enabled': 'false'}
                     AND crc_check_chance = 1.0
                     AND dclocal_read_repair_chance = 0.1
@@ -106,7 +109,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                     ) WITH bloom_filter_fp_chance = 0.01
                     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                     AND comment = ''
-                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+                    AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
                     AND compression = {'enabled': 'false'}
                     AND crc_check_chance = 1.0
                     AND dclocal_read_repair_chance = 0.1
@@ -167,7 +170,6 @@ if (($handle = fopen($csv_file, "r")) !== false) {
 
                 $watch_data='./watch_playlist_remote_neterra.sh --encoder=http://192.168.8.224/tv/'.$tv.'/'.$bitrate1.'.m3u8 --app='.$app.' --tv='.$tv.' --bitrate='.$bitrate1." &\n";
                 file_put_contents($file_watch, $watch_data, FILE_APPEND);
-
             }
         }
 
@@ -183,7 +185,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                   AND bloom_filter_fp_chance = 0.01
                   AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                   AND comment = ''
-                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
                   AND compression = {'enabled': 'false'}
                   AND crc_check_chance = 1.0
                   AND dclocal_read_repair_chance = 0.1
@@ -203,7 +205,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
                   ) WITH bloom_filter_fp_chance = 0.01
                   AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
                   AND comment = ''
-                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '2', 'compaction_window_unit': 'HOURS', 'max_threshold': '32', 'min_threshold': '4'}
+                  AND compaction = {'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', 'compaction_window_size': '30', 'compaction_window_unit': 'MINUTES', 'max_threshold': '32', 'min_threshold': '4'}
                   AND compression = {'enabled': 'false'}
                   AND crc_check_chance = 1.0
                   AND dclocal_read_repair_chance = 0.1
@@ -264,8 +266,14 @@ if (($handle = fopen($csv_file, "r")) !== false) {
 
                 $watch_data='./watch_playlist_remote_neterra.sh --encoder=http://192.168.8.224/tv/'.$tv.'/'.$bitrate2.'.m3u8 --app='.$app.' --tv='.$tv.' --bitrate='.$bitrate2." &\n";
                 file_put_contents($file_watch, $watch_data, FILE_APPEND);
-
             }
+        }
+
+        if ($data[9]===$gpu) {
+            $wowza_data="echo '{\n uri : \"udp://$data[3]\"\n}'>>$data[2].stream\n\n";
+            file_put_contents($file_wowza, $wowza_data, FILE_APPEND);
+            $wowza_startup_data="<StartupStream>\n<Application>gpu/_definst_</Application>\n<StreamName>$data[2].stream</StreamName>\n<MediaCasterType>rtp</MediaCasterType>\n</StartupStream>\n";
+            file_put_contents($file_wowza_startup, $wowza_startup_data, FILE_APPEND);
         }
     }
     fclose($handle);
