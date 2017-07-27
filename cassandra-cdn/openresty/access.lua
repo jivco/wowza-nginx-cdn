@@ -18,25 +18,29 @@ red.connect(red, '127.0.0.1', '6379')
 --get variables from url         
 local Token = ngx.var.arg_h
 
---search in redis for active session         
---when user logs for the first time we set token in redis from login php script
-local UserSessions = red:get(Token)
-UserSessions = tonumber(UserSessions)
-
-local hasValidToken = 0
-if UserSessions >= 1 then
-    hasValidToken = 1
-end
-
---disconnect user if not supply correct data
-if Token == nil or hasValidToken == 0 then
-    ngx.say("No valid token. Get out!")
-    ngx.say(Token)
-    ngx.say(UserSessions)
+if Token == nil then
+    ngx.say("No token is provided!")
     ngx.exit(ngx.HTTP_FORBIDDEN)
 end
 
-local MaxSessions=600
+--search in redis for active session         
+--when user logs for the first time we set token in redis from login php script
+
+local UserSessions,err = red:get(Token)
+
+if not UserSessions then
+    ngx.say("Error connecting to redis", err)
+    ngx.exit(ngx.HTTP_FORBIDDEN)
+end
+
+if UserSessions == ngx.null then
+    ngx.say("The token is not valid!")
+    ngx.exit(ngx.HTTP_FORBIDDEN)
+end
+
+UserSessions = tonumber(UserSessions)
+
+local MaxSessions = 600
 
 if UserSessions > MaxSessions then
     ngx.say(listvalues{"Too many connections: ", UserSessions, " of ",MaxSessions, " allowed for this time period for this token!"})
