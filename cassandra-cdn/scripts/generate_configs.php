@@ -10,6 +10,8 @@ $file_watch = '/tmp/genconfig_watch.txt';
 $file_check = '/tmp/genconfig_check.txt';
 $file_wowza = '/tmp/genconfig_wowza.txt';
 $file_wowza_startup = '/tmp/genconfig_wowza_startup.txt';
+$file_flussonic = '/tmp/genconfig_flussonic.txt';
+$file_udpxy = '/tmp/genconfig_udpxy.txt';
 $gpu='1';
 
 const PORT1=30000;
@@ -23,6 +25,8 @@ exec('rm -f '.$file_watch);
 exec('rm -f '.$file_check);
 exec('rm -f '.$file_wowza);
 exec('rm -f '.$file_wowza_startup);
+exec('rm -f '.$file_flussonic);
+exec('rm -f '.$file_udpxy);
 
 //start cycle
 $row = 2;
@@ -59,6 +63,7 @@ if (($handle = fopen($csv_file, "r")) !== false) {
     file_put_contents($file_watch, $init_data, FILE_APPEND);
     file_put_contents($file_check, $init_data, FILE_APPEND);
     file_put_contents($file_wowza, $init_data, FILE_APPEND);
+    file_put_contents($file_udpxy, $init_data, FILE_APPEND);
 
     while (($data = fgetcsv($handle, 1000, ",")) !== false) {
         $num = count($data);
@@ -128,6 +133,9 @@ if (($handle = fopen($csv_file, "r")) !== false) {
             $port1=PORT1+$port;
             $nss_data='SERVICE, Name = '.$tv.'-sd1, Class = CLASS_INPUT, Type = INPUT_LIVE, KeepAlive = TRUE, Buffer_size = 2M, SOURCE = "udp://@127.0.0.1:'.$port1.'"'."\n";
             file_put_contents($file_nss, $nss_data, FILE_APPEND);
+
+            $udpxy_data="udpxy -J 239.239.239.239:$port1 -B 2M -p $port1\n";
+            file_put_contents($file_udpxy, $udpxy_data, FILE_APPEND);
 
             if ($data[1]===$app) {
                 file_put_contents($file_cql, $cql_data, FILE_APPEND);
@@ -225,6 +233,9 @@ if (($handle = fopen($csv_file, "r")) !== false) {
             $nss_data='SERVICE, Name = '.$tv.'-sd2, Class = CLASS_INPUT, Type = INPUT_LIVE, KeepAlive = TRUE, Buffer_size = 2M, SOURCE = "udp://127.0.0.1:'.$port2.'"'."\n";
             file_put_contents($file_nss, $nss_data, FILE_APPEND);
 
+            $udpxy_data="udpxy -J 239.239.239.239:$port2 -B 2M -p $port2\n";
+            file_put_contents($file_udpxy, $udpxy_data, FILE_APPEND);
+
             if ($data[1]===$app) {
                 file_put_contents($file_cql, $cql_data, FILE_APPEND);
 
@@ -274,6 +285,8 @@ if (($handle = fopen($csv_file, "r")) !== false) {
             file_put_contents($file_wowza, $wowza_data, FILE_APPEND);
             $wowza_startup_data="<StartupStream>\n<Application>gpu/_definst_</Application>\n<StreamName>$data[2].stream</StreamName>\n<MediaCasterType>rtp</MediaCasterType>\n</StartupStream>\n";
             file_put_contents($file_wowza_startup, $wowza_startup_data, FILE_APPEND);
+            $flussonic_data="stream $data[2] {\n url udp://$data[3];\n gop_duration 80;\n transcoder vb=1400k fps=25 vcodec=h264 hw=nvenc profile=high level=4.1 preset=slow x264opts=weightb:bframes=16:keyint=80:min-keyint=80:scenecut=-1 vb=700k  size=360x288 fps=25 vcodec=h264 hw=nvenc profile=high level=4.1 preset=slow x264opts=weightb:bframes=16:keyint=80:min-keyint=80:scenecut=-1 ab=128 ar=48000;\n}\n\n";
+            file_put_contents($file_flussonic, $flussonic_data, FILE_APPEND);
         }
     }
     fclose($handle);
