@@ -1,14 +1,14 @@
 #!/bin/bash
 ########################
-# HLS DVR transcoder   # 
+# HLS DVR transcoder   #
 # and nagios check     #
 #                      #
 # ztodorov@neterra.net #
-# ver 1.13             #
+# ver 1.14             #
 ########################
 
 # changelog
-# ver 1.13 - 05.07.2017 - added transcoding over GPU
+# ver 1.14 - 05.07.2017 - added transcoding over GPU
 
 # Usage
 function usage() {
@@ -92,20 +92,16 @@ if [[ -z "${NAME}" ]]; then
   echo "NAME is not set"
   usage
 fi
-if [[ -z "${SRC}" ]]; then
-  echo "SRC is not set"
-  usage
-fi
-if [[ -z "${VMODE}" ]]; then
-  echo "VMODE is not set"
-  usage
-fi
-if [[ -z "${HQURL}" ]]; then
-  echo "HQURL is not set"
-  usage
-fi
 
 if [ "${MODE}" != "status" ]; then
+  if [[ -z "${SRC}" ]]; then
+    echo "SRC is not set"
+    usage
+  fi
+  if [[ -z "${VMODE}" ]]; then
+    echo "VMODE is not set"
+    usage
+  fi
   if [[ -z "${DVRWINDOW}" ]]; then
     echo "DVRWINDOW is not set"
     usage
@@ -146,10 +142,10 @@ NGX_ROOT='/mnt/store/nginx_root'
 #
 # xxd -r -p key.txt key.enc
 #
-#neterra.keyinfo:
-#http://clappr.neterra.tv/keys/key?{encKeySessionid}
+#localhost.keyinfo:
+#http://player.localhost.localdomain/keys/key?{encKeySessionid}
 #/mnt/store/key.enc
-KEYINFO='/mnt/store/neterra.keyinfo'
+KEYINFO='/mnt/store/localhost.keyinfo'
 # string to append to screen name to be sure to kill right processes
 UNQ_STR='NTR'
 # low quality string
@@ -192,8 +188,7 @@ if [ "${MODE}" = "status" ]; then
     ERROR="$ERROR There are not enough rows in $PROGRAM_ROOT/${NAME}_${LQ}.m3u8!"
   fi
   # check LQ last chunk time
-  if test `find $PROGRAM_ROOT -name "$(tail -n 1 $PROGRAM_ROOT/${NAME}_${LQ}.m3u8)" -mmin +1`
-  then
+  if test `find $PROGRAM_ROOT -name "$(tail -n 1 $PROGRAM_ROOT/${NAME}_${LQ}.m3u8)" -mmin +1`;  then
     ERROR="$ERROR Last chunk in $PROGRAM_ROOT/${NAME}_${LQ}.m3u8 is too old! Maybe there is no input source."
   fi
 
@@ -206,8 +201,7 @@ if [ "${MODE}" = "status" ]; then
     ERROR="$ERROR There are not enough rows in $PROGRAM_ROOT/${NAME}_${HQ}.m3u8!"
   fi
   # check HQ last chunk time
-  if test `find $PROGRAM_ROOT -name "$(tail -n 1 $PROGRAM_ROOT/${NAME}_${HQ}.m3u8)" -mmin +1`
-  then
+  if test `find $PROGRAM_ROOT -name "$(tail -n 1 $PROGRAM_ROOT/${NAME}_${HQ}.m3u8)" -mmin +1`;  then
     ERROR="$ERROR Last chunk in $PROGRAM_ROOT/${NAME}_${HQ}.m3u8 is too old! Maybe there is no input source."
   fi
 
@@ -246,23 +240,23 @@ else
   GOP=$((CHUNKDURATION*25/1000))
 
   if [ "${VMODE}" = "mpeg2" ]; then
-    $SCREEN -dmS $NAME $FFMPEG -hwaccel_device 0 -hwaccel cuvid -c:v mpeg2_cuvid -gpu 0 -deint 2 -i $SRC\?buffer_size=65535&fifo_size=1000000 \
+    $SCREEN -dmS $NAME $FFMPEG -hwaccel_device 1 -hwaccel cuvid -c:v mpeg2_cuvid -gpu 1 -deint 2 -i $SRC\?buffer_size=65535\&fifo_size=1000000 \
     -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:480 -c:v h264_nvenc -g $GOP -preset slow -b:v $HQBITRATE -maxrate $HQBITRATE -bufsize $HQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$LQ'_'%01d.ts \
     -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$LQ.m3u8 \
     -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:360 -c:v h264_nvenc -g $GOP -preset slow -b:v $LQBITRATE -maxrate $LQBITRATE -bufsize $LQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$HQ'_'%01d.ts \
-    -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8 \
+    -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8
   fi
 
   if [ "${VMODE}" = "h264" ]; then
-    $SCREEN -dmS $NAME $FFMPEG -hwaccel_device 0 -hwaccel cuvid -c:v h264_cuvid -gpu 0 -deint 2 -i $SRC\?buffer_size=65535&fifo_size=1000000 \
+    $SCREEN -dmS $NAME $FFMPEG -hwaccel_device 1 -hwaccel cuvid -c:v h264_cuvid -gpu 1 -deint 2 -i $SRC\?buffer_size=65535\&fifo_size=1000000 \
     -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:720 -c:v h264_nvenc -g $GOP -preset slow -b:v $HQBITRATE -maxrate $HQBITRATE -bufsize $HQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$LQ'_'%01d.ts \
     -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$LQ.m3u8 \
     -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:360 -c:v h264_nvenc -g $GOP -preset slow -b:v $LQBITRATE -maxrate $LQBITRATE -bufsize $LQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$HQ'_'%01d.ts \
-    -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8 \
+    -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8
   fi
 
   # create temp playlist
