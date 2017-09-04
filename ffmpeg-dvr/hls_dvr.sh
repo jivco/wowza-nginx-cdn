@@ -146,7 +146,7 @@ NGX_ROOT='/mnt/store/nginx_root'
 # path to HLS key info file
 # key info file can be generated with following commands
 # key.txt:
-# 7C42F51202FABCA34A38758FA8902A09
+# AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 #
 # xxd -r -p key.txt key.enc
 #
