@@ -134,7 +134,7 @@ hash $FFMPEG 2>/dev/null || { echo >&2 "I require FFMPEG but it's not installed.
 # Chunk duration in miliseconds
 CHUNKDURATION=5000
 # nginx DVR document root
-NGX_ROOT='/mnt/store/nginx_root'
+NGX_ROOT='/data/video/vod/DVR/nginx_root'
 # path to HLS key info file
 # key info file can be generated with following commands
 # key.txt:
@@ -144,8 +144,8 @@ NGX_ROOT='/mnt/store/nginx_root'
 #
 #localhost.keyinfo:
 #http://player.localhost.localdomain/keys/key?{encKeySessionid}
-#/mnt/store/key.enc
-KEYINFO='/mnt/store/localhost.keyinfo'
+#/data/video/vod/DVR/key.enc
+KEYINFO='/data/video/vod/DVR/localhost.keyinfo'
 # string to append to screen name to be sure to kill right processes
 UNQ_STR='NTR'
 # low quality string
@@ -241,20 +241,20 @@ else
 
   if [ "${VMODE}" = "mpeg2" ]; then
     $SCREEN -dmS $NAME $FFMPEG -hwaccel_device 1 -hwaccel cuvid -c:v mpeg2_cuvid -gpu 1 -deint 2 -i $SRC\?buffer_size=65535\&fifo_size=1000000 \
-    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:480 -c:v h264_nvenc -g $GOP -preset slow -b:v $HQBITRATE -maxrate $HQBITRATE -bufsize $HQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
+    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:360 -c:v h264_nvenc -g $GOP -preset slow -b:v $HQBITRATE -maxrate $HQBITRATE -bufsize $HQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$LQ'_'%01d.ts \
     -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$LQ.m3u8 \
-    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:360 -c:v h264_nvenc -g $GOP -preset slow -b:v $LQBITRATE -maxrate $LQBITRATE -bufsize $LQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
+    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:480 -c:v h264_nvenc -g $GOP -preset slow -b:v $LQBITRATE -maxrate $LQBITRATE -bufsize $LQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$HQ'_'%01d.ts \
     -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8
   fi
 
   if [ "${VMODE}" = "h264" ]; then
     $SCREEN -dmS $NAME $FFMPEG -hwaccel_device 1 -hwaccel cuvid -c:v h264_cuvid -gpu 1 -deint 2 -i $SRC\?buffer_size=65535\&fifo_size=1000000 \
-    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:720 -c:v h264_nvenc -g $GOP -preset slow -b:v $HQBITRATE -maxrate $HQBITRATE -bufsize $HQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
+    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:360 -c:v h264_nvenc -g $GOP -preset slow -b:v $HQBITRATE -maxrate $HQBITRATE -bufsize $HQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$LQ'_'%01d.ts \
     -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$LQ.m3u8 \
-    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:360 -c:v h264_nvenc -g $GOP -preset slow -b:v $LQBITRATE -maxrate $LQBITRATE -bufsize $LQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
+    -map 0:v:0 -map 0:a:0 -vf scale_npp=-1:720 -c:v h264_nvenc -g $GOP -preset slow -b:v $LQBITRATE -maxrate $LQBITRATE -bufsize $LQBITRATE -c:a libfdk_aac -b:a 96k -ac 2 -ar 48000 \
     -f hls -hls_list_size $DVRWINDOW -hls_allow_cache 1 -hls_segment_filename $NAME'_dvr_'$RANDOM_STR'_'$HQ'_'%01d.ts \
     -hls_key_info_file $KEYINFO -hls_flags delete_segments+append_list $NAME'_'$HQ.m3u8
   fi
