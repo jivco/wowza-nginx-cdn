@@ -1,0 +1,42 @@
+# HLS for local tests GT720
+
+ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vsync 0 -i 'udp://239.0.0.1:30000?buffer_size=65535&fifo_size=1000000' \
+-map 0:0 -map 0:1 -map 0:0 -map 0:1 \
+-c:v:0 h264_nvenc -preset:v:0 slow -profile:v:0 high -g:v:0 80 \
+-b:v:0 4.5M -maxrate:v:0 4.5M -minrate:v:0 4.5M \
+-rc:v:0 cbr_hq -cbr:v:0 1 -aud:v:0 1 -nonref_p:v:0 1 -spatial-aq:v:0 1 -coder:v:0 cabac \
+-c:a:0 libfdk_aac -b:a:0 192k -ac:0 2 -ar:0 48k \
+-c:v:1 h264_nvenc -preset:v:1 slow -profile:v:1 high -g:v:1 80 \
+-filter:v:1 scale_npp=w=-1:h=720 \
+-b:v:1 2M -maxrate:v:1 2M -minrate:v:1 2M \
+-rc:v:1 cbr_hq -cbr:v:1 1 -aud:v:1 1 -nonref_p:v:1 1 -spatial-aq:v:1 1 -coder:v:1 cabac \
+-c:a:1 libfdk_aac -b:a:1 128k -ac:1 2 -ar:1 48k \
+-f tee \
+"[select=\'v:0,a:0\':f=hls:hls_list_size=3:hls_segment_filename=\'1080p_%1d.ts\':hls_flags=delete_segments]1080p.m3u8| \
+[select=\'v:1,a:1\':f=hls:hls_list_size=3:hls_segment_filename=\'720p_%1d.ts\':hls_flags=delete_segments]720p.m3u8"
+
+
+# MPEG-DASH P4000
+
+ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vsync 0 -i 'udp://239.0.0.1:30000?buffer_size=65535&fifo_size=1000000' \
+-map 0:0 -map 0:1 -map 0:0 -map 0:1 -map 0:0 -map 0:1 \
+-c:v:0 h264_nvenc -preset:v:0 slow -profile:v:0 high -g:v:0 80 \
+-b:v:0 4.5M -maxrate:v:0 4.5M -minrate:v:0 4.5M \
+-rc:v:0 cbr_hq -cbr:v:0 1 -weighted_pred:v:0 1 -aud:v:0 1 -nonref_p:v:0 1 -spatial-aq:v:0 1 -aq-strength:v:0 15 -temporal-aq:v:0 1 -coder:v:0 cabac \
+-c:a:0 libfdk_aac -b:a:0 160k -ac:0 2 -ar:0 48k \
+-c:v:1 h264_nvenc -preset:v:1 slow -profile:v:1 high -g:v:1 80 \
+-filter:v:1 scale_npp=w=-1:h=720 \
+-b:v:1 2M -maxrate:v:1 2M -minrate:v:1 2M \
+-rc:v:1 cbr_hq -cbr:v:1 1 -weighted_pred:v:1 1 -aud:v:1 1 -nonref_p:v:1 1 -spatial-aq:v:1 1 -aq-strength:v:1 15 -temporal-aq:v:1 1 -coder:v:1 cabac \
+-c:a:1 libfdk_aac -b:a:1 128k -ac:1 2 -ar:1 48k \
+-c:v:2 h264_nvenc -preset:v:2 slow -profile:v:2 high -g:v:2 80 \
+-filter:v:2 scale_npp=w=-1:h=360 \
+-b:v:2 0.6M -maxrate:v:2 0.6M -minrate:v:2 0.6M \
+-rc:v:2 cbr_hq -cbr:v:2 1 -weighted_pred:v:2 1 -aud:v:2 1 -nonref_p:v:2 1 -spatial-aq:v:2 1 -aq-strength:v:2 15 -temporal-aq:v:2 1 -coder:v:2 cabac \
+-c:a:2 libfdk_aac -b:a:2 64k -ac:2 2 -ar:2 48k \
+-f dash -min_seg_duration 3000000 -window_size 5 -use_template 1 -use_timeline 0 -adaptation_sets "id=0,streams=v id=1,streams=a" -media_seg_name 'media_$RepresentationID$-$Number%01d$.m4s' stream.mpd
+
+
+# MPEG-TS output
+
+ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vsync 0 -i 'udp://239.0.0.1:30000?buffer_size=65535&fifo_size=1000000' -c:v h264_nvenc -b:v 3M -maxrate:v 3M -minrate:v 3M -preset:v slow -profile:v high -rc:v cbr_hq -cbr:v 1 -weighted_pred:v 1 -aud:v 1 -nonref_p:v 1 -spatial-aq:v 1 -aq-strength:v 15 -temporal-aq:v 1 -coder:v cabac -g:v 80 -c:a libfdk_aac -b:a 160k -ar 48k -f mpegts -pcr_period 200 -flush_packets 0 -max_interleave_delta 0 'udp://239.0.0.2:30000?pkt_size=1316&multicast=1'
