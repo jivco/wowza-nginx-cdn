@@ -4,12 +4,12 @@ ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vs
 -map 0:0 -map 0:1 -map 0:0 -map 0:1 \
 -c:v:0 h264_nvenc -preset:v:0 slow -profile:v:0 high -g:v:0 80 \
 -b:v:0 4.5M -maxrate:v:0 4.5M -minrate:v:0 4.5M \
--rc:v:0 cbr_hq -cbr:v:0 1 -aud:v:0 1 -nonref_p:v:0 1 -spatial-aq:v:0 1 -coder:v:0 cabac \
+-rc:v:0 cbr_hq -cbr:v:0 1 -aud:v:0 1 -nonref_p:v:0 1 -spatial-aq:v:0 1 -aq-strength:v:0 15 -coder:v:0 cabac \
 -c:a:0 libfdk_aac -b:a:0 192k -ac:0 2 -ar:0 48k \
 -c:v:1 h264_nvenc -preset:v:1 slow -profile:v:1 high -g:v:1 80 \
 -filter:v:1 scale_npp=w=-1:h=720 \
 -b:v:1 2M -maxrate:v:1 2M -minrate:v:1 2M \
--rc:v:1 cbr_hq -cbr:v:1 1 -aud:v:1 1 -nonref_p:v:1 1 -spatial-aq:v:1 1 -coder:v:1 cabac \
+-rc:v:1 cbr_hq -cbr:v:1 1 -aud:v:1 1 -nonref_p:v:1 1 -spatial-aq:v:1 1 -aq-strength:v:1 15 -coder:v:1 cabac \
 -c:a:1 libfdk_aac -b:a:1 128k -ac:1 2 -ar:1 48k \
 -f tee \
 "[select=\'v:0,a:0\':f=hls:hls_list_size=3:hls_segment_filename=\'1080p_%1d.ts\':hls_flags=delete_segments]1080p.m3u8| \
