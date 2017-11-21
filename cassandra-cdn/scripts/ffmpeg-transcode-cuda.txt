@@ -5,7 +5,7 @@ ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vs
 -c:v:0 h264_nvenc -profile:v:0 high -level:v:0 4.0 -g:v:0 80 -b:v:0 4M -maxrate:v:0 6M \
 -preset:v:0 slow -rc:v:0 vbr_hq -weighted_pred:v:0 1 -temporal-aq:v:0 1 -strict_gop:v:0 1 \
 -c:a:0 libfdk_aac -b:a:0 192k -ac:0 2 -ar:0 48k \
--c:v:1 h264_nvenc -filter:v:1 scale_npp=w=-1:h=720:interp_algo=super -profile:v:1 high -level:v:1 4.0 -g:v:1 80 -b:v:1 2M -maxrate:v:1 4M \
+-c:v:1 h264_nvenc -filter:v:1 scale_npp=w=-1:h=720:interp_algo=lanczos -profile:v:1 high -level:v:1 4.0 -g:v:1 80 -b:v:1 2M -maxrate:v:1 4M \
 -preset:v:1 slow -rc:v:1 vbr_hq -weighted_pred:v:1 1 -temporal-aq:v:1 1 -strict_gop:v:1 1 \
 -c:a:1 libfdk_aac -b:a:1 128k -ac:1 2 -ar:1 48k \
 -c:v:2 h264_nvenc -filter:v:2 scale_npp=w=-1:h=360:interp_algo=super -profile:v:2 high -level:v:2 4.0 -g:v:2 80 -b:v:2 0.5M -maxrate:v:2 1M \
