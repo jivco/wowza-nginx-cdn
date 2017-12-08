@@ -1,3 +1,4 @@
+# Don't forget to patch ffmpeg with https://github.com/arut/ffmpeg-patches/blob/master/mpegts-33bit
 # HLS
 ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vsync 0 \
 -i 'udp://239.0.0.1:30000?buffer_size=65535&fifo_size=1000000' \
@@ -20,3 +21,5 @@ ffmpeg -v debug -hwaccel cuvid -c:v h264_cuvid -deint 2 -drop_second_field 1 -vs
 
 # DASH
 -f dash -min_seg_duration 3000000 -window_size 5 -use_template 1 -use_timeline 0 -adaptation_sets "id=0,streams=v id=1,streams=a" -media_seg_name 'media_$RepresentationID$-$Number%01d$.m4s' stream.mpd
+
+# DASH generation is not working very well so you can use https://github.com/arut/nginx-ts-module
