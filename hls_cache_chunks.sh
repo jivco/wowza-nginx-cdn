@@ -79,7 +79,7 @@ function gen_chunklist {
     echo '#EXT-X-VERSION:3' >>$NGX_BITRATE_TMP
     echo "#EXT-X-TARGETDURATION:$CHUNKDURATION">>$NGX_BITRATE_TMP
     echo "#EXT-X-MEDIA-SEQUENCE:$XMS">>$NGX_BITRATE_TMP
-    echo '#EXT-X-KEY:METHOD=AES-128,URI="http://clappr.neterra.tv/keys/key?{encKeySessionid}"'>>$NGX_BITRATE_TMP
+    echo '#EXT-X-KEY:METHOD=AES-128,URI="http://127.0.0.1/keys/key?{encKeySessionid}"'>>$NGX_BITRATE_TMP
 
     cat $NGX_PLAYLIST >>$NGX_BITRATE_TMP
     mv $NGX_BITRATE_TMP $NGX_BITRATE
